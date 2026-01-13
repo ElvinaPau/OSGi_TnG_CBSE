@@ -1,0 +1,8 @@
+1768297516873:feature:install scr
+1768297526169:feature:list | grep scr
+1768297626714:bundle:install file:///Users/Rachels-MacBook-Pro/Documents/GitHub/OSGi_TnG_CBSE/ewallet/ewallet-api/target/ewallet-api-1.0-SNAPSHOT.jar
+1768297683211:bundle:install file:///Users/rachelfong/OSGi_TnG_CBSE/ewallet/ewallet-api/target/ewallet-api-1.0-SNAPSHOT.jar
+1768297727807:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/ewallet-api/target/ewallet-api-1.0-SNAPSHOT.jar
+1768297743764:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/user-component/target/user-component-1.0-SNAPSHOT.jar
+1768297757990:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/wallet-component/target/wallet-component-1.0-SNAPSHOT.jar
+1768297769592:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/ewallet-commands/target/ewallet-commands-1.0-SNAPSHOT.jar
