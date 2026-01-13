@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1768285516275
+Build-Jdk-Spec: 22
+Bundle-Description: Wallet Service Implementation
+Bundle-ManifestVersion: 2
+Bundle-Name: Wallet Component
+Bundle-SymbolicName: wallet-component
+Bundle-Version: 1.0.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin 5.1.9
+Import-Package: com.tng;version="[1.0,2)",java.io,java.lang,java.util,ja
+ va.util.concurrent,org.osgi.framework;version="[1.10,2)"
+Provide-Capability: osgi.service;objectClass:List<String>="com.tng.Walle
+ tService";uses:="com.tng"
+Require-Capability: osgi.service;filter:="(objectClass=com.tng.UserServi
+ ce)";effective:=active,osgi.extender;filter:="(&(osgi.extender=osgi.com
+ ponent)(version>=1.4.0)(!(version>=2.0.0)))"
+Service-Component: OSGI-INF/com.tng.wallet.impl.WalletServiceImpl.xml
+Tool: Bnd-6.3.1.202206071316

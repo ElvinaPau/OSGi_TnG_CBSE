@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1768285516667
+Build-Jdk-Spec: 22
+Bundle-Description: Karaf Shell Commands for E-Wallet
+Bundle-ManifestVersion: 2
+Bundle-Name: E-Wallet Commands
+Bundle-SymbolicName: ewallet-commands
+Bundle-Version: 1.0.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin 5.1.9
+Import-Package: com.tng;version="[1.0,2)",org.apache.karaf.shell.api.act
+ ion;version="[4.4,5)",org.apache.karaf.shell.api.action.lifecycle;versi
+ on="[4.4,5)",org.apache.karaf.shell.api.console;version="[4.4,5)",org.a
+ pache.karaf.shell.support.completers;version="[4.4,5)"
+Tool: Bnd-6.3.1.202206071316
