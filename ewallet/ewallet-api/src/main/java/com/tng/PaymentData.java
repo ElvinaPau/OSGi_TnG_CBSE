@@ -26,4 +26,6 @@ public class PaymentData {
     
     public String getUserId() { return userId; }
     public String getStatus() { return status; }
+    public String getDescription() { return description; }
+    public double getAmount() { return amount; }
 }
