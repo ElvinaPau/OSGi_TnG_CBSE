@@ -11,3 +11,43 @@
 1768297972586:scr:list
 1768297989447:ewallet:create-user rachel
 1768298013333:ewallet:create-wallet rachel 800
+1768304213305:feature:install scr
+1768304220726:feature:list | grep scr
+1768304233310:bundle:install file:///Users/rachelfong/Desktop/CBSE/OSGi_TnG_CBSE/ewallet/ewallet-api/target/ewallet-api-1.0-SNAPSHOT.jar
+1768304270223:bundle:start 59 60 61 62
+1768304325728:shutdown\n]
+1768304328108:shutdown
+1768304462661:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/ewallet-api/target/ewallet-api-1.0-SNAPSHOT.jar
+1768304469240:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/user-component/target/user-component-1.0-SNAPSHOT.jar
+1768304474940:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/wallet-component/target/wallet-component-1.0-SNAPSHOT.jar
+1768304481770:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/payment-component/target/payment-component-1.0-SNAPSHOT.jar
+1768304493351:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/ewallet-commands/target/ewallet-commands-1.0-SNAPSHOT.jar
+1768304500621:bundle:start *
+1768304516673:bundle:start 53 54 55 56 57
+1768304550983:feature:install scr
+1768304559538:bundle:start 53 54 55 56 57
+1768304568797:bundle:list
+1768304599475:ewallet:create-user Alice
+1768304610210:ewallet:create-wallet Alice 100.00
+1768304893133:feature:install scr
+1768304902903:bundle:install -s file:///Users/elvinapau/Desktop/CBSE/OSGi_TnG_CBSE/ewallet/ewallet-api/target/ewallet-api-1.0-SNAPSHOT.jar
+1768304939086:bundle:install -s file:///Users/rachelfong/Document/GitHub/OSGi_TnG_CBSE/ewallet/ewallet-api/target/ewallet-api-1.0-SNAPSHOT.jar
+1768305043752:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/ewallet-api/target/ewallet-api-1.0-SNAPSHOT.jar
+1768305049897:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/user-component/target/user-component-1.0-SNAPSHOT.jar
+1768305057876:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/wallet-component/target/wallet-component-1.0-SNAPSHOT.jar
+1768305064709:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/payment-component/target/payment-component-1.0-SNAPSHOT.jar
+1768305073330:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/ewallet-commands/target/ewallet-commands-1.0-SNAPSHOT.jar
+1768305094864:bundle:list
+1768305137678:feature:install scr\nfeature:install eventadmin\nfeature:install config
+1768305156144:bundle:start 59 60 61 62 63
+1768305162901:bundle:list
+1768305189777:ewallet:create-user Ali\newallet:create-wallet Ali 50
+1768305203588:ewallet:topup Ali 100
+1768305255075:ewallet:balance Ali
+1768305270411:ewallet:pay Ali Tesco 45.50
+1768305284335:ewallet:scan-qr Ali "Starbucks:15.00"
+1768305298169:ewallet:autopay Ali setup Netflix 30
+1768305307111:ewallet:autopay Ali run
+1768305327465:ewallet:history Ali
+1768305349893:ewallet:history Ali qr
+1768305362763:ewallet:history Ali autopay
