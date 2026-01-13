@@ -283,3 +283,4 @@ org.apache.karaf.shell.support.MultiException: Error installing bundles:
 		at org.apache.felix.framework.BundleContextImpl.installBundle(BundleContextImpl.java:147) ~[?:?]
 		at org.apache.karaf.bundle.command.Install.execute(Install.java:84) ~[?:?]
 		... 13 more
+2026-01-13T17:52:32,947 | INFO  | pipe-bundle:start 59 60 61 62 | CommandExtension                 | 45 - org.apache.karaf.shell.core - 4.4.9 | Registering commands for bundle ewallet-commands/1.0.0.SNAPSHOT

@@ -6,3 +6,8 @@
 1768297743764:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/user-component/target/user-component-1.0-SNAPSHOT.jar
 1768297757990:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/wallet-component/target/wallet-component-1.0-SNAPSHOT.jar
 1768297769592:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/ewallet-commands/target/ewallet-commands-1.0-SNAPSHOT.jar
+1768297952921:bundle:start 59 60 61 62
+1768297960819:bundle:list
+1768297972586:scr:list
+1768297989447:ewallet:create-user rachel
+1768298013333:ewallet:create-wallet rachel 800
