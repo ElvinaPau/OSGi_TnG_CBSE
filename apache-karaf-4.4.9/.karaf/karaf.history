@@ -82,3 +82,31 @@
 1768307995070:ewallet:scan-qr Alice "Starbucks:15.00"
 1768308016351:ewallet:autopay Alice setup Netflix 30
 1768308028301:ewallet:history Alice
+1768308988892:feature:install scr
+1768309008338:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/ewallet-api/target/ewallet-api-1.0-SNAPSHOT.jar
+1768309015266:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/user-component/target/user-component-1.0-SNAPSHOT.jar
+1768309022616:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/wallet-component/target/wallet-component-1.0-SNAPSHOT.jar
+1768309029128:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/payment-component/target/payment-component-1.0-SNAPSHOT.jar
+1768309035820:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/ewallet-commands/target/ewallet-commands-1.0-SNAPSHOT.jar
+1768309049120:bundle:start 57 58 59 60 61
+1768309068055:ewallet:create-user Ali
+1768309075588:ewallet:create-wallet Ali 50
+1768309083571:ewallet:balance Ali
+1768309238922:ewallet:topup Ali 100
+1768309247386:ewallet:pay Ali Tesco 45.50
+1768309256440:ewallet:scan-qr Ali "Starbucks:15.00"
+1768309263183:ewallet:autopay Ali setup Netflix 30
+1768309316277:ewallet:autopay Ali run
+1768309327402:ewallet:history Ali
+1768309601014:ewallet:pay Ali Tesco 45.50
+1768309624781:ewallet:pay Ali LDP-Toll 2.10
+1768309653998:ewallet:pay Ali Shopee 12.8
+1768310081687:ewallet:scan-qr  "Starbucks:15.00"
+1768310133511:ewallet:scan-qr Ali "Starbucks15"
+1768310200150:ewallet:scan-qr Ali "Starbucks:15"
+1768310619412:ewallet:topup Ali 300
+1768310709502:ewallet:scan-qr Ali "Starbucks:15"
+1768310735815:ewallet:autopay Ali run
+1768310940697:ewallet:history Ali
+1768310982262:ewallet:history Ali qr
+1768311021414:ewallet:history Ali autopay
