@@ -80,6 +80,9 @@ karaf@root()> bundle:install file:///Users/<your-username>/Desktop/CBSE/OSGi_TnG
 # Install Wallet Component
 karaf@root()> bundle:install file:///Users/<your-username>/Desktop/CBSE/OSGi_TnG_CBSE/ewallet/wallet-component/target/wallet-component-1.0-SNAPSHOT.jar
 
+# Install Payment Component
+karaf@root()> bundle:install -s file:///Users/<your-username>/Document/GitHub/OSGi_TnG_CBSE/ewallet/payment-component/target/payment-component-1.0-SNAPSHOT.jar
+
 # Install Commands
 karaf@root()> bundle:install file:///Users/<your-username>/Desktop/CBSE/OSGi_TnG_CBSE/ewallet/ewallet-commands/target/ewallet-commands-1.0-SNAPSHOT.jar
 ```
@@ -91,7 +94,7 @@ karaf@root()> bundle:install file:///Users/<your-username>/Desktop/CBSE/OSGi_TnG
 Note the bundle IDs from the installation step (e.g., 57, 58, 59, 60) and start them:
 
 ```bash
-karaf@root()> bundle:start 57 58 59 60
+karaf@root()> bundle:start 57 58 59 60 61
 ```
 
 ### 5. Verify Installation
@@ -103,9 +106,11 @@ karaf@root()> bundle:list
 ```
 
 You should see all four bundles in **Active** state:
+
 - E-Wallet API
 - User Component
 - Wallet Component
+- Payment Component
 - E-Wallet Commands
 
 Verify services are registered:
@@ -121,34 +126,53 @@ karaf@root()> scr:list
 The e-wallet provides the following Karaf shell commands:
 
 #### Create a User
+
 ```bash
 karaf@root()> ewallet:create-user <username>
 ```
 
 Example:
+
 ```bash
 karaf@root()> ewallet:create-user Alice
 ```
 
 #### Create a Wallet
+
 ```bash
 karaf@root()> ewallet:create-wallet <username> <initial-balance>
 ```
 
 Example:
+
 ```bash
 karaf@root()> ewallet:create-wallet Alice 100.00
 ```
 
 #### Check Balance
+
 ```bash
 karaf@root()> ewallet:balance <username>
 ```
 
 Example:
+
 ```bash
 karaf@root()> ewallet:balance Alice
 ```
+
+## Full list usage
+
+| Command                 | Description                          | Usage Example                                                                      |
+| ----------------------- | ------------------------------------ | ---------------------------------------------------------------------------------- |
+| `ewallet:create-user`   | Create a new user                    | `ewallet:create-user Ali`                                                          |
+| `ewallet:create-wallet` | Create a wallet with opening balance | `ewallet:create-wallet Ali 50`                                                     |
+| `ewallet:balance`       | Check wallet balance                 | `ewallet:balance Ali`                                                              |
+| `ewallet:topup `        | Add funds (logged in history)        | `ewallet:topup Ali 100`                                                            |
+| `ewallet:pay`           | Make a retail payment                | `ewallet:pay Ali Tesco 45.50`                                                      |
+| `ewallet:scan-qr`       | Pay via QR string                    | `ewallet:scan-qr Ali "Starbucks:15.00"`                                            |
+| `ewallet:autopay `      | Manage AutoPay (setup / run)         | `ewallet:autopay Ali setup Netflix 30`                                             |
+| `ewallet:history`       | View transaction history             | `ewallet:history Ali`<br>`ewallet:history Ali qr`<br>`ewallet:history Ali autopay` |
 
 ### Example Workflow
 
@@ -170,6 +194,13 @@ karaf@root()> ewallet:balance Alice
 === Wallet Balance ===
   Username: Alice
   Balance: RM 500.00
+
+# 4. Top-Up Wallet
+karaf@root()> ewallet:topup Ali 100
+Processing top-up for Ali...
+Top-Up Successful!
+Added RM 100.00 to Ali's wallet.
+
 ```
 
 ## Troubleshooting
@@ -187,11 +218,13 @@ karaf@root()> bundle:diag <bundle-id>
 If commands aren't recognized:
 
 1. Verify the bundle is active:
+
    ```bash
    karaf@root()> bundle:list
    ```
 
 2. Check if commands are registered:
+
    ```bash
    karaf@root()> help | grep ewallet
    ```
@@ -206,6 +239,7 @@ If commands aren't recognized:
 If you get "Service not available" errors:
 
 1. Check service registration:
+
    ```bash
    karaf@root()> scr:list
    ```
@@ -221,6 +255,7 @@ If you get "Service not available" errors:
 After making code changes:
 
 1. Rebuild the affected module:
+
    ```bash
    cd ~/Desktop/CBSE/OSGi_TnG_CBSE/ewallet/<module-name>
    mvn clean install
@@ -254,14 +289,15 @@ Then reinstall all bundles following the deployment steps.
 5. Rebuild and update the bundle
 
 Example:
+
 ```java
 @Command(scope = "ewallet", name = "my-command", description = "Description")
 @Service
 public class MyCommand implements Action {
-    
+
     @Reference
     private UserService userService;
-    
+
     @Override
     public Object execute() throws Exception {
         // Command logic here
@@ -315,6 +351,7 @@ user-component, wallet-component
 ## Team Collaboration Tips
 
 1. **Always rebuild after pulling changes:**
+
    ```bash
    git pull
    mvn clean install
@@ -330,19 +367,19 @@ user-component, wallet-component
 
 ## Useful Karaf Commands Reference
 
-| Command | Description |
-|---------|-------------|
-| `bundle:list` | List all installed bundles |
-| `bundle:install <url>` | Install a bundle |
-| `bundle:start <id>` | Start a bundle |
-| `bundle:stop <id>` | Stop a bundle |
-| `bundle:restart <id>` | Restart a bundle |
-| `bundle:update <id>` | Update a bundle |
-| `bundle:headers <id>` | Show bundle manifest headers |
-| `bundle:diag <id>` | Diagnose bundle issues |
-| `scr:list` | List all DS components |
-| `scr:info <component>` | Show component details |
-| `feature:install scr` | Install Service Component Runtime |
-| `log:tail` | Tail the log output |
-| `log:display` | Display log entries |
-| `help` | Show all available commands |
+| Command                | Description                       |
+| ---------------------- | --------------------------------- |
+| `bundle:list`          | List all installed bundles        |
+| `bundle:install <url>` | Install a bundle                  |
+| `bundle:start <id>`    | Start a bundle                    |
+| `bundle:stop <id>`     | Stop a bundle                     |
+| `bundle:restart <id>`  | Restart a bundle                  |
+| `bundle:update <id>`   | Update a bundle                   |
+| `bundle:headers <id>`  | Show bundle manifest headers      |
+| `bundle:diag <id>`     | Diagnose bundle issues            |
+| `scr:list`             | List all DS components            |
+| `scr:info <component>` | Show component details            |
+| `feature:install scr`  | Install Service Component Runtime |
+| `log:tail`             | Tail the log output               |
+| `log:display`          | Display log entries               |
+| `help`                 | Show all available commands       |

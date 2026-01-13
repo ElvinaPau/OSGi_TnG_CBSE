@@ -1,4 +1,8 @@
-/Users/elvinapau/Desktop/CBSE/OSGi_TnG_CBSE/ewallet/ewallet-api/src/main/java/com/tng/User.java
-/Users/elvinapau/Desktop/CBSE/OSGi_TnG_CBSE/ewallet/ewallet-api/src/main/java/com/tng/UserService.java
-/Users/elvinapau/Desktop/CBSE/OSGi_TnG_CBSE/ewallet/ewallet-api/src/main/java/com/tng/Wallet.java
-/Users/elvinapau/Desktop/CBSE/OSGi_TnG_CBSE/ewallet/ewallet-api/src/main/java/com/tng/WalletService.java
+/Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/ewallet-api/src/main/java/com/tng/AutoPayData.java
+/Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/ewallet-api/src/main/java/com/tng/PaymentData.java
+/Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/ewallet-api/src/main/java/com/tng/PaymentService.java
+/Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/ewallet-api/src/main/java/com/tng/QRData.java
+/Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/ewallet-api/src/main/java/com/tng/User.java
+/Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/ewallet-api/src/main/java/com/tng/UserService.java
+/Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/ewallet-api/src/main/java/com/tng/Wallet.java
+/Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/ewallet-api/src/main/java/com/tng/WalletService.java

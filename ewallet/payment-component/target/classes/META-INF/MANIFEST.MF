@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1768307660518
+Build-Jdk-Spec: 17
+Bundle-ManifestVersion: 2
+Bundle-Name: payment-component
+Bundle-SymbolicName: payment-component
+Bundle-Version: 1.0.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin 5.1.9
+Import-Package: com.tng;version="[1.0,2)"
+Provide-Capability: osgi.service;objectClass:List<String>="com.tng.Payme
+ ntService";uses:="com.tng"
+Require-Capability: osgi.service;filter:="(objectClass=com.tng.WalletSer
+ vice)";effective:=active,osgi.extender;filter:="(&(osgi.extender=osgi.c
+ omponent)(version>=1.5.0)(!(version>=2.0.0)))"
+Service-Component: OSGI-INF/com.tng.payment.impl.PaymentServiceImpl.xml
+Tool: Bnd-6.3.1.202206071316

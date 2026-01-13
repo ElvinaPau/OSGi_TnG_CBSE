@@ -1,5 +1,10 @@
+com/tng/commands/ScanQRCommand.class
+com/tng/commands/TopUpCommand.class
 com/tng/commands/AddFundsCommand.class
 com/tng/commands/CreateUserCommand.class
+com/tng/commands/AutoPayCommand.class
+com/tng/commands/PayCommand.class
 com/tng/commands/CreateWalletCommand.class
 com/tng/commands/BalanceCommand.class
 com/tng/commands/DeductCommand.class
+com/tng/commands/HistoryCommand.class

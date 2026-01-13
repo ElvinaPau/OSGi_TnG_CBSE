@@ -15,6 +15,7 @@
     <module>ewallet-api</module>
     <module>user-component</module>
     <module>wallet-component</module>
+    <module>payment-component</module>
     <module>ewallet-commands</module>
   </modules>
 
