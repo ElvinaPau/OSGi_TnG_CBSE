@@ -4,7 +4,6 @@ import com.tng.*;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
@@ -24,18 +23,23 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public boolean processPayment(String userId, double amount, String merchant) {
         boolean success = walletService.deductBalance(userId, amount, merchant);
+        
+        // Log with status
+        String status = success ? "SUCCESS" : "FAILED";
+        
+        // Only saving SUCCESS for now, but you could save FAILED too
         if (success) {
-            paymentStore.add(new PaymentData(userId, amount, merchant, "RETAIL"));
+            // FIXED: Added 'status' argument
+            paymentStore.add(new PaymentData(userId, amount, merchant, "RETAIL", status));
         }
         return success;
     }
 
     @Override
     public boolean processTopUp(String userId, double amount) {
-        // We assume WalletService has an 'addFunds' method. 
-        // If it returns void, we just assume success for simplicity here.
         walletService.addFunds(userId, amount); 
-        paymentStore.add(new PaymentData(userId, amount, "Wallet Top-Up", "TOPUP"));
+        // FIXED: Added "SUCCESS" status
+        paymentStore.add(new PaymentData(userId, amount, "Wallet Top-Up", "TOPUP", "SUCCESS"));
         return true;
     }
 
@@ -49,26 +53,19 @@ public class PaymentServiceImpl implements PaymentService {
     // --- 2. QR Logic ---
     @Override
     public boolean processQRPayment(String userId, String qrString) {
-        // Parse "Merchant:Amount" e.g., "McDonalds:15.50"
         String[] parts = qrString.split(":");
-        if (parts.length != 2) {
-            System.err.println("Invalid QR Format. Use 'Merchant:Amount'");
-            return false;
-        }
+        if (parts.length != 2) return false;
 
         String merchant = parts[0];
-        double amount;
-        try {
-            amount = Double.parseDouble(parts[1]);
-        } catch (NumberFormatException e) {
-            System.err.println("Invalid Amount in QR");
-            return false;
-        }
+        double amount = Double.parseDouble(parts[1]);
 
         boolean success = walletService.deductBalance(userId, amount, "QR: " + merchant);
+        String status = success ? "SUCCESS" : "FAILED";
+
         if (success) {
-            qrStore.add(new QRData(userId, qrString, merchant, amount));
-            paymentStore.add(new PaymentData(userId, amount, "QR: " + merchant, "QR"));
+            // FIXED: Added 'status' argument to both
+            qrStore.add(new QRData(userId, qrString, merchant, amount, status));
+            paymentStore.add(new PaymentData(userId, amount, "QR: " + merchant, "QR", status));
         }
         return success;
     }
@@ -83,28 +80,31 @@ public class PaymentServiceImpl implements PaymentService {
     // --- 3. AutoPay Logic ---
     @Override
     public void registerAutoPay(String userId, String biller, double amount) {
-        autoPayStore.add(new AutoPayData(userId, biller, amount));
+        // FIXED: Added "ACTIVE" status
+        autoPayStore.add(new AutoPayData(userId, biller, amount, "ACTIVE"));
         System.out.println("AutoPay registered for " + biller);
     }
 
     @Override
     public void runAutoPaySimulation(String userId) {
         List<AutoPayData> userAutoPays = getAutoPaySettings(userId);
-        if (userAutoPays.isEmpty()) {
-            System.out.println("No AutoPay settings found for user.");
-            return;
-        }
-
+        
         System.out.println("--- Running AutoPay Simulation ---");
         for (AutoPayData data : userAutoPays) {
-            boolean success = walletService.deductBalance(userId, data.getAmount(), "AutoPay: " + data.getBiller());
-            if (success) {
-                data.updateLastExecuted();
-                // Also log to general history
-                paymentStore.add(new PaymentData(userId, data.getAmount(), "AutoPay: " + data.getBiller(), "AUTOPAY"));
-                System.out.println("Processed AutoPay: " + data);
-            } else {
-                System.err.println("Failed AutoPay for " + data.getBiller() + " (Insufficient Funds)");
+            // Check status properly
+            if ("ACTIVE".equals(data.getStatus())) {
+                boolean success = walletService.deductBalance(userId, data.getAmount(), "AutoPay: " + data.getBiller());
+                
+                String runStatus = success ? "SUCCESS" : "FAILED";
+                
+                if (success) {
+                    data.updateLastExecuted();
+                    // FIXED: Added 'runStatus' argument
+                    paymentStore.add(new PaymentData(userId, data.getAmount(), "AutoPay: " + data.getBiller(), "AUTOPAY", runStatus));
+                    System.out.println("Processed AutoPay: " + data);
+                } else {
+                    System.err.println("Failed AutoPay for " + data.getBiller());
+                }
             }
         }
     }
