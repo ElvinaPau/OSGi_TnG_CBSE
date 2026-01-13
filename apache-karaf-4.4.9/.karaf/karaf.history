@@ -51,3 +51,34 @@
 1768305327465:ewallet:history Ali
 1768305349893:ewallet:history Ali qr
 1768305362763:ewallet:history Ali autopay
+1768306859851:feature:install scr
+1768306896997:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/ewallet-api/target/ewallet-api-1.0-SNAPSHOT.jar
+1768306905022:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/user-component/target/user-component-1.0-SNAPSHOT.jar
+1768306912100:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/wallet-component/target/wallet-component-1.0-SNAPSHOT.jar
+1768306918815:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/payment-component/target/payment-component-1.0-SNAPSHOT.jar
+1768306925623:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/ewallet-commands/target/ewallet-commands-1.0-SNAPSHOT.jar
+1768306932944:bundle:start *
+1768306951160:bundle:start 57 58 59 60 61
+1768306963787:bundle:list
+1768306982880:ewallet:create-user Rachel
+1768307008962:ewallet:create-wallet Rachel 230
+1768307026419:ewallet:topup 70
+1768307035938:ewallet:topup Rachel 70
+1768307061694:ewallet:pay Rachel Tesco 20
+1768307100543:ewallet:scan-qr Rachel " UM-Food-Store:12"
+1768307124444:ewallet:autopay Rachel setup AppleMusic 20
+1768307139818:ewallet:history Rachel
+1768307295051:cd ~/Document/GitHub/OSGi_TnG_CBSE/ewallet/payment-component\nmvn clean install
+1768307300642:shutdown
+1768307824920:feature:install scr
+1768307883665:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/ewallet-api/target/ewallet-api-1.0-SNAPSHOT.jar
+1768307890970:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/user-component/target/user-component-1.0-SNAPSHOT.jar
+1768307897986:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/wallet-component/target/wallet-component-1.0-SNAPSHOT.jar
+1768307905224:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/payment-component/target/payment-component-1.0-SNAPSHOT.jar
+1768307912191:bundle:install file:///Users/rachelfong/Documents/GitHub/OSGi_TnG_CBSE/ewallet/ewallet-commands/target/ewallet-commands-1.0-SNAPSHOT.jar
+1768307931521:bundle:start 57 58 59 60 61
+1768307953776:ewallet:create-user Alice
+1768307963785:ewallet:create-wallet Alice 100.00
+1768307995070:ewallet:scan-qr Alice "Starbucks:15.00"
+1768308016351:ewallet:autopay Alice setup Netflix 30
+1768308028301:ewallet:history Alice
