@@ -24,11 +24,13 @@
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>osgi.core</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>osgi.cmpn</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -41,6 +43,7 @@
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.service.component.annotations</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -56,19 +59,10 @@
                         <Bundle-Name>E-Wallet Commands</Bundle-Name>
                         <Bundle-Description>Karaf Shell Commands for E-Wallet</Bundle-Description>
 
-                        <Export-Package></Export-Package>
+                        <Export-Package>com.tng.commands</Export-Package>
+                        <Import-Package>*</Import-Package>
 
-                        <Import-Package>
-                            com.tng,
-                            org.apache.karaf.shell.api.action,
-                            org.apache.karaf.shell.api.console,
-                            org.apache.karaf.shell.support.completers,
-                            *
-                        </Import-Package>
-
-                        <Private-Package>com.tng.commands</Private-Package>
-
-                        <_dsannotations>*</_dsannotations>
+                        <Karaf-Commands>com.tng.commands</Karaf-Commands>
                     </instructions>
                 </configuration>
             </plugin>
