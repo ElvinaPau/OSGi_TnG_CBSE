@@ -1,0 +1,12 @@
+# Ignore Apache Karaf runtime
+apache-karaf-*/
+apache-karaf-4.4.9/
+data/
+deploy/
+instances/
+lock
+
+# Ignore compiled Java files (already likely there, but good to check)
+target/
+*.class
+*.jar
