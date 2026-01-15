@@ -8,51 +8,58 @@ import org.apache.karaf.shell.api.action.lifecycle.Reference;
 import org.apache.karaf.shell.api.action.lifecycle.Service;
 import java.util.List;
 
-@Command(scope = "ewallet", name = "insurance", description = "Manage Insurance (buy/view/claim)")
+@Command(scope = "ewallet", name = "insurance", description = "Insurance operations")
 @Service
 public class InsuranceCommand implements Action {
 
     @Reference
     private InsuranceService insuranceService;
 
-    @Argument(index = 0, name = "action", description = "Action: buy / view / claim", required = true)
-    private String action;
-
-    @Argument(index = 1, name = "username", description = "User Name", required = true)
-    private String username;
-
-    @Argument(index = 2, name = "detail", description = "Plate No (for buy) or Policy ID (for claim)", required = false)
-    private String detail;
+    @Argument(index = 0, name = "params", multiValued = true, description = "Command arguments")
+    private List<String> params;
 
     @Override
     public Object execute() throws Exception {
-        if ("buy".equals(action)) {
-            if (detail == null) {
-                System.out.println("Error: Please provide Plate Number.");
-                return null;
-            }
-            insuranceService.purchaseMotorPolicy(username, detail);
+        if (params == null || params.isEmpty()) {
+            System.out.println("Usage: ewallet:insurance [buy/view/claim] [args...]");
+            return null;
+        }
 
-        } else if ("view".equals(action)) {
-            List<String> policies = insuranceService.viewPolicies(username);
-            if (policies.isEmpty()) {
-                System.out.println("No policies found for " + username);
-            } else {
-                System.out.println("--- Policies for " + username + " ---");
-                for (String p : policies) {
-                    System.out.println(p);
+        String action = params.get(0);
+
+        switch (action) {
+            case "buy":
+                // buy <user> <phone> <plate>
+                if (params.size() >= 4) {
+                    insuranceService.purchaseMotorPolicy(params.get(1), params.get(2), params.get(3));
+                } else {
+                    System.out.println("Error: Use buy <user> <phone> <plate>");
                 }
-            }
+                break;
 
-        } else if ("claim".equals(action)) {
-            if (detail == null) {
-                System.out.println("Error: Please provide Policy ID.");
-                return null;
-            }
-            insuranceService.submitClaim(username, detail);
+            case "view":
+                // view <user>
+                if (params.size() >= 2) {
+                    List<String> policies = insuranceService.viewPolicies(params.get(1));
+                    if (policies == null || policies.isEmpty()) {
+                        System.out.println("No active policies found.");
+                    } else {
+                        policies.forEach(System.out::println);
+                    }
+                }
+                break;
 
-        } else {
-            System.out.println("Unknown action. Try: buy, view, claim");
+            case "claim":
+                // claim <user> <policyId>
+                if (params.size() >= 3) {
+                    insuranceService.submitClaim(params.get(1), params.get(2));
+                } else {
+                    System.out.println("Error: Use claim <user> <policyId>");
+                }
+                break;
+
+            default:
+                System.out.println("Unknown action.");
         }
         return null;
     }

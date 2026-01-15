@@ -4,14 +4,11 @@ import com.tng.InsuranceService;
 import com.tng.PaymentService;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component(service = InsuranceService.class)
 public class InsuranceServiceImpl implements InsuranceService {
-
 
     private final Map<String, List<String>> policyStore = new ConcurrentHashMap<>();
 
@@ -19,31 +16,30 @@ public class InsuranceServiceImpl implements InsuranceService {
     private PaymentService paymentService;
 
     @Override
-    public void purchaseMotorPolicy(String username, String plateNo) {
-        System.out.println("\n--- Processing Insurance for " + username + " ---");
+    public void purchaseMotorPolicy(String userId, String phoneNumber, String plateNo) {
+        String phone = (phoneNumber != null) ? phoneNumber : "N/A";
 
-
-        boolean success = paymentService.processPayment(username, 500.0, "Purchase Motor Insurance");
+        // Process payment
+        boolean success = paymentService.processPayment(userId, phone, 500.0, "Motor Insurance");
 
         if (success) {
-
-            String policyInfo = "Motor Policy [" + plateNo + "] - Active";
-            policyStore.computeIfAbsent(username, k -> new ArrayList<>()).add(policyInfo);
-            System.out.println("✅ Motor Policy Created for car: " + plateNo);
+            // Create and store policy
+            String policyInfo = "ID:" + plateNo + " [Motor] - Active";
+            policyStore.computeIfAbsent(userId, k -> new ArrayList<>()).add(policyInfo);
+            System.out.println("Motor Policy Created: " + plateNo);
         } else {
-            System.out.println("❌ Purchase Failed: Insufficient funds in wallet.");
+            System.err.println("Purchase Failed: Insufficient funds.");
         }
     }
 
     @Override
-    public void submitClaim(String username, String policyId) {
-
-        System.out.println("✅ Claim submitted for Policy: " + policyId);
-        System.out.println("   Status: Pending Review");
+    public void submitClaim(String userId, String policyId) {
+        // Log claim submission
+        System.out.println("Claim submitted for Policy: " + policyId + " (User: " + userId + ")");
     }
 
     @Override
-    public List<String> viewPolicies(String username) {
-        return policyStore.getOrDefault(username, new ArrayList<>());
+    public List<String> viewPolicies(String userId) {
+        return policyStore.getOrDefault(userId, new ArrayList<>());
     }
 }
