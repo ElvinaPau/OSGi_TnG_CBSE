@@ -17,6 +17,7 @@
     <module>wallet-component</module>
     <module>payment-component</module>
     <module>ewallet-commands</module>
+    <module>insurance-component</module>
   </modules>
 
   <properties>
