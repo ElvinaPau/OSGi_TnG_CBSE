@@ -85,8 +85,10 @@ public class EvaluateRiskCommand implements Action {
 
             if (!scanner.hasNextLine()) return -1;
 
-            String input = scanner.nextLine().trim();
-            if (input.isEmpty()) continue;
+            String input = scanner.next();
+            if (scanner.hasNextLine()) {
+                scanner.nextLine(); 
+            }
 
             try {
                 int choice = Integer.parseInt(input);
