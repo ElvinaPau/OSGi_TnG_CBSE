@@ -13,7 +13,7 @@ import java.io.PrintStream;
 import java.util.List;
 import java.util.Scanner;
 
-@Command(scope = "ewallet", name = "risk-quiz", description = "Interactive Risk Assessment Quiz")
+@Command(scope = "ewallet", name = "risk-quiz", description = "Take Risk Assessment Quiz")
 @Service
 public class EvaluateRiskCommand implements Action {
 

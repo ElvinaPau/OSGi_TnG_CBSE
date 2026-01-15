@@ -83,17 +83,23 @@ public class InvestmentServiceImpl implements InvestmentService {
             double volatility;
 
             switch (fund.getRiskCategory().toLowerCase()) {
-                case "high": volatility = 0.10; break;
+                case "high":   volatility = 0.10; break;
                 case "medium": volatility = 0.04; break;
-                case "low": volatility = 0.01; break;
-                default: volatility = 0.03;
+                case "low":    volatility = 0.01; break;
+                default:       volatility = 0.03;
             }
 
-            double change = (random.nextDouble() * 2 * volatility) - volatility;
-            double rawNewPrice = Math.max(0.01, fund.getPrice() * (1 + change));
-            double roundedPrice = Math.round(rawNewPrice * 10000.0) / 10000.0;
+            double oldPrice = fund.getPrice();
+            double changePercent = (random.nextDouble() * 2 * volatility) - volatility;
+            double rawNewPrice = oldPrice * (1 + changePercent);
+            
+            double finalPrice = Math.max(0.01, rawNewPrice);
+            double roundedPrice = Math.round(finalPrice * 10000.0) / 10000.0;
 
             updateFundPrice(fund.getFundId(), roundedPrice);
+
+            System.out.printf("[Market] %-25s: RM %8.4f -> RM %8.4f (%+.2f%%)%n", 
+                fund.getName(), oldPrice, roundedPrice, changePercent * 100);
         }
     }
 
