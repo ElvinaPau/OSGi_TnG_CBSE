@@ -83,6 +83,9 @@ karaf@root()> bundle:install file:///Users/<your-username>/Desktop/CBSE/OSGi_TnG
 # Install Payment Component
 karaf@root()> bundle:install -s file:///Users/<your-username>/Document/GitHub/OSGi_TnG_CBSE/ewallet/payment-component/target/payment-component-1.0-SNAPSHOT.jar
 
+# Install Investment Component
+karaf@root()> bundle:install -s file:///Users/<your-username>/Document/Github/OSGi_TnG_CBSE/ewallet/investment-component/target/investment-component-1.0-SNAPSHOT.jar
+
 # Install Commands
 karaf@root()> bundle:install file:///Users/<your-username>/Desktop/CBSE/OSGi_TnG_CBSE/ewallet/ewallet-commands/target/ewallet-commands-1.0-SNAPSHOT.jar
 ```
@@ -94,7 +97,7 @@ karaf@root()> bundle:install file:///Users/<your-username>/Desktop/CBSE/OSGi_TnG
 Note the bundle IDs from the installation step (e.g., 57, 58, 59, 60) and start them:
 
 ```bash
-karaf@root()> bundle:start 57 58 59 60 61
+karaf@root()> bundle:start 57 58 59 60 61 62
 ```
 
 ### 5. Verify Installation
@@ -111,6 +114,7 @@ You should see all four bundles in **Active** state:
 - User Component
 - Wallet Component
 - Payment Component
+- Investment Component
 - E-Wallet Commands
 
 Verify services are registered:
@@ -372,6 +376,177 @@ karaf@root()> ewallet:history 0123456789 autopay
 | `ewallet:scan-qr`    | Scan and pay via QR string           | `ewallet:scan-qr 0123456789 "Starbucks:15.50"`   |
 | `ewallet:autopay`    | Manage AutoPay (setup/run)           | `ewallet:autopay 0123456789 setup TNB 80`        |
 | `ewallet:history`    | View payment history (general/qr/autopay) | `ewallet:history 0123456789 qr`             |
+
+---
+
+## Available Commands (Investment Module)
+
+### **Show Available Investment Funds**
+
+```bash
+karaf@root()> ewallet:invest-list <username>
+```
+
+- username is optional
+
+**Example:**
+
+```bash
+karaf@root()> ewallet:invest-list
+
+#   | ID     | NAME                      |   NAV (RM) | RISK     |      OWNED
+-----------------------------------------------------------------------------
+1   | F01    | Low Risk Income Fund      |     1.0000 | Low      |     0.0000
+2   | F02    | Balanced Global Fund      |     2.5000 | Medium   |     0.0000
+3   | F03    | Equity Growth Fund        |     5.7500 | High     |     0.0000
+4   | F04    | Digital Assets Fund       |    10.2000 | High     |     0.0000
+
+karaf@root()> ewallet:invest-list Alice
+Username: Alice
+
+#   | ID     | NAME                      |   NAV (RM) | RISK     |      OWNED
+-----------------------------------------------------------------------------
+1   | F01    | Low Risk Income Fund      |     1.0000 | Low      |     0.0000
+2   | F02    | Balanced Global Fund      |     2.5000 | Medium   |     0.0000
+3   | F03    | Equity Growth Fund        |     5.7500 | High     |     0.0000
+4   | F04    | Digital Assets Fund       |    10.2000 | High     |     0.0000
+```
+
+---
+
+### **Buy or Sell Fund Units**
+
+```bash
+karaf@root()> ewallet:invest-trade <phoneNumber> <username> <action> <fundId> <amount>
+```
+
+**Example:**
+```bash
+karaf@root()> ewallet:invest-trade 0123456789 Alice BUY F02 50
+Successfully invested RM 50.0 in F02
+
+karaf@root()> ewallet:invest-trade 0123456789 Alice SELL F02 20
+Successfully sold 20.0 units of F02
+```
+
+---
+
+### **Show Investment History**
+
+```bash
+karaf@root()> ewallet:invest-history <username>
+```
+
+**Example:**
+```bash
+karaf@root()> ewallet:invest-history Alice
+
+===============================================================================================
+                  INVESTMENT TRANSACTION HISTORY: ALICE
+===============================================================================================
+TYPE       | FUND ID      | STATUS   | AMOUNT       | UNITS      | DATE
+-----------------------------------------------------------------------------------------------
+BUY        | F02          | SUCCESS  | - RM 50.00   | 20.0000    | Thu Jan 15 23:55:22 MYT 2026
+SELL       | F02          | SUCCESS  | + RM 50.00   | 20.0000    | Thu Jan 15 23:56:44 MYT 2026
+===============================================================================================
+Total Transactions: 2
+===============================================================================================
+
+```
+
+---
+
+### **View User Portfolio and Returns**
+
+```bash
+karaf@root()> ewallet:invest-portfolio <username>
+```
+
+**Example:**
+```bash
+karaf@root()> ewallet:invest-portfolio Alice
+
+==========================================
+         YOUR PORTFOLIO SUMMARY
+==========================================
+Username     : Alice
+Risk Profile : Not Assessed (Take the quiz!)
+------------------------------------------
+CURRENT HOLDINGS:
+------------------------------------------
+Net Performance : RM 0.00
+Overall Status  : PROFIT
+==========================================
+```
+
+---
+
+### **Take Risk Assessment Quiz**
+
+```bash
+karaf@root()> ewallet:risk-quiz <username>
+```
+- User input will not be shown in the console
+- After typing a number (1-3), click 'Enter' 2 times to go to next question
+
+**Example:**
+```bash
+karaf@root()> ewallet:risk-quiz Alice
+RISK ASSESSMENT QUIZ
+Hello Alice, let's determine your risk profile.
+
+1. What is your investment goal?
+   (1) Preserve Capital
+   (2) Balanced Growth
+   (3) Maximize Returns
+Your choice (1-3): 
+2. How do you react if your investment drops 10%?
+   (1) Sell everything
+   (2) Do nothing
+   (3) Buy more
+Your choice (1-3):
+3. What is your investment timeframe?
+   (1) < 1 year
+   (2) 1-5 years
+   (3) 5+ years
+Your choice (1-3):
+----------------------------------------------------
+RESULT: Your Risk Profile is MODERATE
+----------------------------------------------------
+Based on your profile, we recommend looking at:
+ >> Balanced Global Fund (ID: F02)
+```
+
+---
+
+### **Simulate Market Price Changes**
+
+```bash
+karaf@root()> ewallet:invest-simulate
+```
+
+**Example:**
+```bash
+karaf@root()> ewallet:invest-simulate
+[Market] Simulating fund price changes based on volatility...
+[Market] Low Risk Income Fund     : RM   1.0000 -> RM   1.0095 (+0.95%)
+[Market] Balanced Global Fund     : RM   2.5000 -> RM   2.4012 (-3.95%)
+[Market] Equity Growth Fund       : RM   5.7500 -> RM   5.7229 (-0.47%)
+[Market] Digital Assets Fund      : RM  10.2000 -> RM  10.4999 (+2.94%)
+```
+
+### **Full List of Investment Commands**
+
+| Command                    | Description                       | Usage Example                                    |
+| -------------------------- | --------------------------------- | ------------------------------------------------ |
+| `ewallet:invest-list`      | Show available investment funds   | `ewallet:invest-list` OR </br>`ewallet:invest-list Alice`  |
+| `ewallet:invest-trade`     | Buy or Sell fund units            | `ewallet:invest-trade 0123456789 Alice BUY F02 50` <br/> `ewallet:invest-trade 0123456789 Alice SELL F02 20` |
+| `ewallet:invest-history`   | Show investment history           | `ewallet:invest-history Alice`        |
+| `ewallet:invest-portfolio` | View user portfolio and returns   | `ewallet:invest-portfolio Alice`      |
+| `ewallet:risk-quiz`        | Take Risk Assessment Quiz         | `ewallet:risk-quiz Alice`             |
+| `ewallet:invest-simulate`  | Simulate market price changes     | `ewallet:invest-simulate`             |
+
+---
 
 ## Troubleshooting
 
