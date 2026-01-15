@@ -14,26 +14,29 @@ public class TradeCommand implements Action {
     @Reference
     private InvestmentService investmentService;
 
-    @Argument(index = 0, name = "username", description = "User's ID", required = true)
+    @Argument(index = 0, name = "phoneNumber", description = "User Phone Number", required = true, multiValued = false)
+    private String phoneNumber;
+
+    @Argument(index = 1, name = "username", description = "User's ID", required = true)
     String username;
 
-    @Argument(index = 1, name = "action", description = "BUY or SELL", required = true)
+    @Argument(index = 2, name = "action", description = "BUY or SELL", required = true)
     String action;
 
-    @Argument(index = 2, name = "fundId", description = "The ID of the fund", required = true)
+    @Argument(index = 3, name = "fundId", description = "The ID of the fund", required = true)
     String fundId;
 
-    @Argument(index = 3, name = "amount", description = "RM amount to buy or Unit count to sell", required = true)
+    @Argument(index = 4, name = "amount", description = "RM amount to buy or Unit count to sell", required = true)
     double value;
 
     @Override
     public Object execute() {
         try {
             if ("BUY".equalsIgnoreCase(action)) {
-                investmentService.investInFund(username, fundId, value);
+                investmentService.investInFund(phoneNumber, username, fundId, value);
                 System.out.println("Successfully invested RM " + value + " in " + fundId);
             } else if ("SELL".equalsIgnoreCase(action)) {
-                investmentService.sellFund(username, fundId, value);
+                investmentService.sellFund(phoneNumber, username, fundId, value);
                 System.out.println("Successfully sold " + value + " units of " + fundId);
             } else {
                 System.err.println("Invalid action. Use BUY or SELL.");

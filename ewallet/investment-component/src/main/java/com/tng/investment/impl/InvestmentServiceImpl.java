@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @Component(service = InvestmentService.class)
 public class InvestmentServiceImpl implements InvestmentService {
 
-    private final Map<String, FundData> fundRepo = new ConcurrentHashMap<>();
+    private final Map<String, FundData> fundRepo = Collections.synchronizedMap(new LinkedHashMap<>());
     private final Map<String, PortfolioData> portfolioRepo = new ConcurrentHashMap<>();
     private final List<InvestmentData> historyRepo =
             Collections.synchronizedList(new ArrayList<>());
@@ -22,16 +22,17 @@ public class InvestmentServiceImpl implements InvestmentService {
 
     @Activate
     public void activate() {
+        fundRepo.clear();
         initSampleFunds();
     }
 
     // Initialize sample Fund Data
     private void initSampleFunds() {
         if (!fundRepo.isEmpty()) return;
-        addFund(new FundData("F01", "Low Risk Income Fund", "Bonds and steady interest.", "Low", 1.00));
-        addFund(new FundData("F02", "Balanced Global Fund", "International stocks.", "Medium", 2.50));
-        addFund(new FundData("F03", "Equity Growth Fund", "High-growth tech markets.", "High", 5.75));
-        addFund(new FundData("F04", "Digital Assets Fund", "Blockchain and crypto.", "High", 10.20));
+        addFund(new FundData("F01", "Low Risk Income Fund", "Bonds and steady interest.", "Low", 1.0000));
+        addFund(new FundData("F02", "Balanced Global Fund", "International stocks.", "Medium", 2.5000));
+        addFund(new FundData("F03", "Equity Growth Fund", "High-growth tech markets.", "High", 5.7500));
+        addFund(new FundData("F04", "Digital Assets Fund", "Blockchain and crypto.", "High", 10.2000));
     }
 
     // FUND METHODS
@@ -89,17 +90,18 @@ public class InvestmentServiceImpl implements InvestmentService {
             }
 
             double change = (random.nextDouble() * 2 * volatility) - volatility;
-            double newPrice = Math.max(0.01, fund.getPrice() * (1 + change));
+            double rawNewPrice = Math.max(0.01, fund.getPrice() * (1 + change));
+            double roundedPrice = Math.round(rawNewPrice * 10000.0) / 10000.0;
 
-            updateFundPrice(fund.getFundId(), newPrice);
+            updateFundPrice(fund.getFundId(), roundedPrice);
         }
     }
 
     // INVESTMENT METHODS (BUY / SELL)
-    private InvestmentData createInvestmentRecord(String userId, String fundId, String type, double amount,
+    private InvestmentData createInvestmentRecord(String username, String fundId, String type, double amount,
                                                 double units, String status) {
         InvestmentData record = new InvestmentData();
-        record.setUserId(userId);
+        record.setUserId(username);
         record.setFundId(fundId);
         record.setType(type);
         record.setAmount(amount);
@@ -109,14 +111,14 @@ public class InvestmentServiceImpl implements InvestmentService {
     }
 
     @Override
-    public InvestmentData investInFund(String userId, String fundId, double amount) {
+    public InvestmentData investInFund(String phoneNumber, String username, String fundId, double amount) {
         FundData fund = getFundById(fundId);
         if (fund == null) {
             throw new RuntimeException("Fund not found with ID: " + fundId);
         }
 
         // 1. Use payment sevice to process payment
-        boolean success = paymentService.processPayment(userId, amount, fund.getName());
+        boolean success = paymentService.processPayment(phoneNumber, username, amount, fund.getName());
 
         if (!success) {
             throw new RuntimeException("Insufficient wallet balance.");
@@ -125,20 +127,20 @@ public class InvestmentServiceImpl implements InvestmentService {
         double units = amount / fund.getPrice();
         try {
             // 2. Update portfolio
-            updateUserPortfolioHoldings(userId, fundId, units);
+            updateUserPortfolioHoldings(username, fundId, units);
 
             // 3. Record history (AFTER success)
             InvestmentData record = createInvestmentRecord(
-                userId, fundId, "BUY", amount, units, "SUCCESS"
+                username, fundId, "BUY", amount, units, "SUCCESS"
             );
             historyRepo.add(record);
             return record;
 
         } catch (Exception e) {
             // 4. Rollback wallet if anything fails
-            paymentService.processTopUp(userId, amount);
+            paymentService.processTopUp(phoneNumber, username, amount);
             InvestmentData failed = createInvestmentRecord(
-                userId, fundId, "BUY", amount, 0, "FAILED"
+                username, fundId, "BUY", amount, 0, "FAILED"
             );
             historyRepo.add(failed);
             throw new RuntimeException("System error. Amount refunded.");
@@ -147,8 +149,8 @@ public class InvestmentServiceImpl implements InvestmentService {
 
 
     @Override
-    public void sellFund(String userId, String fundId, double unitsToSell) {
-        PortfolioData portfolio = getUserPortfolio(userId);
+    public void sellFund(String phoneNumber, String username, String fundId, double unitsToSell) {
+        PortfolioData portfolio = getUserPortfolio(username);
         double ownedUnits = portfolio.getUnitsForFund(fundId);
 
         if (ownedUnits < unitsToSell) {
@@ -166,41 +168,41 @@ public class InvestmentServiceImpl implements InvestmentService {
         portfolio.updateHoldings(fundId, -unitsToSell);
 
         // 2. Credit wallet
-        paymentService.processTopUp(userId, proceeds);
+        paymentService.processTopUp(phoneNumber, username, proceeds);
 
         InvestmentData record = createInvestmentRecord(
-                userId, fundId, "SELL", proceeds, unitsToSell, "SUCCESS"
+                username, fundId, "SELL", proceeds, unitsToSell, "SUCCESS"
             );
             historyRepo.add(record);
     }
 
 
     @Override
-    public List<InvestmentData> getInvestmentHistory(String userId) {
+    public List<InvestmentData> getInvestmentHistory(String username) {
         return historyRepo.stream()
-                .filter(h -> h.getUserId().equals(userId))
+                .filter(h -> h.getUserId().equals(username))
                 .collect(Collectors.toList());
     }
 
     // PORTFOLIO METHODS
     @Override
-    public PortfolioData getUserPortfolio(String userId) {
-        return portfolioRepo.computeIfAbsent(userId, id -> {
+    public PortfolioData getUserPortfolio(String username) {
+        return portfolioRepo.computeIfAbsent(username, id -> {
             PortfolioData p = new PortfolioData();
             p.setUserId(id);
             return p;
         });
     }
 
-    private void updateUserPortfolioHoldings(String userId, String fundId, double addedUnits) {
-        PortfolioData portfolio = getUserPortfolio(userId);
+    private void updateUserPortfolioHoldings(String username, String fundId, double addedUnits) {
+        PortfolioData portfolio = getUserPortfolio(username);
         portfolio.updateHoldings(fundId, addedUnits);
     }
 
     @Override
-    public double calculateReturns(String userId) {
+    public double calculateReturns(String username) {
         double netInvestment = historyRepo.stream()
-                .filter(h -> h.getUserId().equals(userId))
+                .filter(h -> h.getUserId().equals(username))
                 .mapToDouble(h ->
                         "BUY".equalsIgnoreCase(h.getType())
                                 ? h.getAmount()
@@ -208,7 +210,7 @@ public class InvestmentServiceImpl implements InvestmentService {
                 .sum();
 
         double currentMarketValue = 0;
-        PortfolioData portfolio = getUserPortfolio(userId);
+        PortfolioData portfolio = getUserPortfolio(username);
 
         for (Map.Entry<String, Double> entry : portfolio.getFundHoldings().entrySet()) {
             FundData fund = fundRepo.get(entry.getKey());
@@ -221,8 +223,8 @@ public class InvestmentServiceImpl implements InvestmentService {
     }
 
     @Override
-    public void evaluateRiskProfile(String userId, String riskCategory) {
-        PortfolioData portfolio = getUserPortfolio(userId);
+    public void evaluateRiskProfile(String username, String riskCategory) {
+        PortfolioData portfolio = getUserPortfolio(username);
         portfolio.setRiskCategory(riskCategory);
     }
 }

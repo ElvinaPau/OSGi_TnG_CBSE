@@ -29,14 +29,16 @@ public class InvestmentHistoryCommand implements Action {
             return null;
         }
 
-        System.out.println("\n" + "=".repeat(85));
-        System.out.println(String.format("   INVESTMENT TRANSACTION HISTORY: %s", username.toUpperCase()));
-        System.out.println("=".repeat(85));
+        System.out.println("\n" + "=".repeat(95));
+        System.out.println(
+            String.format("                  INVESTMENT TRANSACTION HISTORY: %s", username.toUpperCase())
+        );
+        System.out.println("=".repeat(95));
         
-        // Table Header matching your Spring Boot table structure
+        // Table Header
         System.out.println(String.format("%-10s | %-12s | %-8s | %-12s | %-10s | %-10s", 
             "TYPE", "FUND ID", "STATUS", "AMOUNT", "UNITS", "DATE"));
-        System.out.println("-".repeat(85));
+        System.out.println("-".repeat(95));
 
         for (InvestmentData record : history) {
             // Logic for visual indicators (+ for Sell, - for Buy)
@@ -52,9 +54,9 @@ public class InvestmentHistoryCommand implements Action {
             ));
         }
 
-        System.out.println("=".repeat(85));
+        System.out.println("=".repeat(95));
         System.out.println(String.format("Total Transactions: %d", history.size()));
-        System.out.println("=".repeat(85) + "\n");
+        System.out.println("=".repeat(95) + "\n");
 
         return null;
     }

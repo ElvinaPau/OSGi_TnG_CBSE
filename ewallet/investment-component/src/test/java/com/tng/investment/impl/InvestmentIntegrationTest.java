@@ -33,8 +33,8 @@ public class InvestmentIntegrationTest {
 
         // Setup environment
         investmentService.activate(); // Create funds
-        userService.findOrCreateUser("user1");
-        walletService.findOrCreateWallet("user1", 1000.0); // Start with RM 1000
+        userService.findOrCreateUser("0123456789", "user1");
+        walletService.findOrCreateWallet("0123456789","user1", 1000.0); // Start with RM 1000
     }
 
     private void injectField(Object target, String fieldName, Object value) throws Exception {
@@ -45,28 +45,29 @@ public class InvestmentIntegrationTest {
 
     @Test
     public void testFullInvestmentAndSellFlow() {
-        String userId = "user1";
+        String phoneNumber = "0123456789";
+        String username = "user1";
         String fundId = "F02";
         double investAmount = 500.0;
 
         // 1. BUY
-        InvestmentData buyRecord = investmentService.investInFund(userId, fundId, investAmount);
+        InvestmentData buyRecord = investmentService.investInFund(phoneNumber, username, fundId, investAmount);
         
         assertEquals(200.0, buyRecord.getUnits(), 0.01);
-        assertEquals(500.0, walletService.getWallet(userId).getBalance(), 0.01);
+        assertEquals(500.0, walletService.getWallet(phoneNumber).getBalance(), 0.01);
 
         // 2. CHECK PORTFOLIO
-        PortfolioData portfolio = investmentService.getUserPortfolio(userId);
+        PortfolioData portfolio = investmentService.getUserPortfolio(username);
         assertEquals(200.0, portfolio.getUnitsForFund(fundId), 0.01);
 
         // 3. SELL
-        investmentService.sellFund(userId, fundId, 100.0);
+        investmentService.sellFund(phoneNumber, username, fundId, 100.0);
 
-        assertEquals(750.0, walletService.getWallet(userId).getBalance(), 0.01);
-        assertEquals(100.0, investmentService.getUserPortfolio(userId).getUnitsForFund(fundId), 0.01);
+        assertEquals(750.0, walletService.getWallet(phoneNumber).getBalance(), 0.01);
+        assertEquals(100.0, investmentService.getUserPortfolio(username).getUnitsForFund(fundId), 0.01);
 
         // 4. VERIFY HISTORY
-        List<InvestmentData> history = investmentService.getInvestmentHistory(userId);
+        List<InvestmentData> history = investmentService.getInvestmentHistory(username);
         assertEquals(2, history.size()); // 1 BUY, 1 SELL
     }
 }

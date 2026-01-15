@@ -33,20 +33,21 @@ public class FundCommand implements Action {
         List<FundData> funds = investmentService.getAllAvailableFunds();
 
         if (funds.isEmpty()) {
-            System.out.println("No funds available. Use 'invest:init' to populate samples.");
+            System.out.println("No funds available.");
             return null;
         }
 
         PortfolioData portfolio = null;
         if (username != null) {
             portfolio = investmentService.getUserPortfolio(username);
+            System.out.println("Username: " + username);
         }
 
         System.out.printf(
-            "%-3s | %-6s | %-25s | %-10s | %-8s | %-10s%n",
-            "#", "ID", "NAME", "PRICE", "RISK", "OWNED"
+            "%n%-3s | %-6s | %-25s | %10s | %-8s | %10s%n",
+            "#", "ID", "NAME", "NAV (RM)", "RISK", "OWNED"
         );
-        System.out.println("----------------------------------------------------------------------------");
+        System.out.println("-----------------------------------------------------------------------------");
 
         int i = 1;
         for (FundData f : funds) {
@@ -57,10 +58,11 @@ public class FundCommand implements Action {
             }
 
             System.out.printf(
-                "%-3d | %-6s | %-25s | RM %-7.2f | %-8s | %-10.4f%n",
-                i++, f.getFundId(), f.getName(), f.getPrice(), f.getRiskCategory(), owned
+                "%-3d | %-6s | %-25s | %10.4f | %-8s | %10.4f%n",
+                i++, f.getFundId(), f.getName(), f.getNav(), f.getRiskCategory(), owned
             );
         }
+        System.out.println("");
 
         return null;
     }

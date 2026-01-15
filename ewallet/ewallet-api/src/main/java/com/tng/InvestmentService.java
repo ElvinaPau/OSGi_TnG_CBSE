@@ -14,12 +14,12 @@ public interface InvestmentService {
     void deleteFundByIndex(int index);
 
     // 2. Investment functions
-    InvestmentData investInFund(String userId, String fundId, double amount);
-    void sellFund(String userId, String fundId, double units);
-    List<InvestmentData> getInvestmentHistory(String userId);
+    InvestmentData investInFund(String phoneNumber, String username, String fundId, double amount);
+    void sellFund(String phoneNumber, String username, String fundId, double units);
+    List<InvestmentData> getInvestmentHistory(String username);
 
     // 3. Portfolio functions
-    PortfolioData getUserPortfolio(String userId);
-    double calculateReturns(String userId);
-    void evaluateRiskProfile(String userId, String riskCategory);
+    PortfolioData getUserPortfolio(String username);
+    double calculateReturns(String username);
+    void evaluateRiskProfile(String username, String riskCategory);
 }

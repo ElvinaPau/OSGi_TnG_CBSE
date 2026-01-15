@@ -37,7 +37,7 @@ public class PortfolioCommand implements Action {
         sb.append("\n==========================================\n");
         sb.append("         YOUR PORTFOLIO SUMMARY           \n");
         sb.append("==========================================\n");
-        sb.append(String.format("User         : %s%n", username));
+        sb.append(String.format("Username     : %s%n", username));
         sb.append(String.format("Risk Profile : %s%n", risk));
         sb.append("------------------------------------------\n");
 

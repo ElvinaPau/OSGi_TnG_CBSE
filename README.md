@@ -121,87 +121,257 @@ karaf@root()> scr:list
 
 ## Usage
 
-### Available Commands
+## Available Commands (Wallet Module)
 
-The e-wallet provides the following Karaf shell commands:
-
-#### Create a User
+### **Create a User**
 
 ```bash
-karaf@root()> ewallet:create-user <username>
+karaf@root()> ewallet:create-user <phoneNumber> <username>
 ```
 
-Example:
+**Example:**
 
 ```bash
-karaf@root()> ewallet:create-user Alice
-```
-
-#### Create a Wallet
-
-```bash
-karaf@root()> ewallet:create-wallet <username> <initial-balance>
-```
-
-Example:
-
-```bash
-karaf@root()> ewallet:create-wallet Alice 100.00
-```
-
-#### Check Balance
-
-```bash
-karaf@root()> ewallet:balance <username>
-```
-
-Example:
-
-```bash
-karaf@root()> ewallet:balance Alice
-```
-
-## Full list usage
-
-| Command                 | Description                          | Usage Example                                                                      |
-| ----------------------- | ------------------------------------ | ---------------------------------------------------------------------------------- |
-| `ewallet:create-user`   | Create a new user                    | `ewallet:create-user Ali`                                                          |
-| `ewallet:create-wallet` | Create a wallet with opening balance | `ewallet:create-wallet Ali 50`                                                     |
-| `ewallet:balance`       | Check wallet balance                 | `ewallet:balance Ali`                                                              |
-| `ewallet:topup `        | Add funds (logged in history)        | `ewallet:topup Ali 100`                                                            |
-| `ewallet:pay`           | Make a retail payment                | `ewallet:pay Ali Tesco 45.50`                                                      |
-| `ewallet:scan-qr`       | Pay via QR string                    | `ewallet:scan-qr Ali "Starbucks:15.00"`                                            |
-| `ewallet:autopay `      | Manage AutoPay (setup / run)         | `ewallet:autopay Ali setup Netflix 30`                                             |
-| `ewallet:history`       | View transaction history             | `ewallet:history Ali`<br>`ewallet:history Ali qr`<br>`ewallet:history Ali autopay` |
-
-### Example Workflow
-
-```bash
-# 1. Create a user
-karaf@root()> ewallet:create-user Alice
+karaf@root()> ewallet:create-user 0123456789 Alice
 User created successfully!
+  Phone Number: 0123456789
   Username: Alice
   User ID: 123e4567-e89b-12d3-a456-426614174000
+```
 
-# 2. Create a wallet for the user
-karaf@root()> ewallet:create-wallet Alice 500.00
+---
+
+### **Create a Wallet**
+
+```bash
+karaf@root()> ewallet:create-wallet <phoneNumber> <username> <initial-balance>
+```
+
+**Example:**
+
+```bash
+karaf@root()> ewallet:create-wallet 0123456789 Alice 500.00
 Wallet created successfully!
+  Phone Number: 0123456789
   Username: Alice
   Initial Balance: RM 500.00
+```
 
-# 3. Check the balance
-karaf@root()> ewallet:balance Alice
+---
+
+### **Check Wallet Balance**
+
+```bash
+karaf@root()> ewallet:balance <phoneNumber>
+```
+
+**Example:**
+
+```bash
+karaf@root()> ewallet:balance 0123456789
 === Wallet Balance ===
+  Phone Number: 0123456789
   Username: Alice
   Balance: RM 500.00
-
-# 4. Top-Up Wallet
-karaf@root()> ewallet:topup Ali 100
-Processing top-up for Ali...
-Top-Up Successful!
-Added RM 100.00 to Ali's wallet.
-
 ```
+
+---
+
+### **Add Money**
+
+```bash
+karaf@root()> ewallet:add-money <phoneNumber> <amount>
+```
+
+**Example:**
+
+```bash
+karaf@root()> ewallet:add-money 0123456789 100
+Money added successfully!
+  Amount Added: RM 100.00
+  Old Balance: RM 500.00
+  New Balance: RM 600.00
+```
+
+---
+
+### **Deduct Balance**
+
+```bash
+karaf@root()> ewallet:deduct <phoneNumber> <amount> "Description"
+```
+
+**Example:**
+
+```bash
+karaf@root()> ewallet:deduct 0123456789 50 "Coffee payment"
+Balance deducted successfully!
+  Amount Deducted: RM 50.00
+  Description: Coffee payment
+  Old Balance: RM 600.00
+  New Balance: RM 550.00
+```
+
+---
+
+### **Send Money to Another User**
+
+```bash
+karaf@root()> ewallet:send-money <senderPhone> <recipientPhone> <amount>
+```
+
+**Example:**
+
+```bash
+karaf@root()> ewallet:send-money 0123456789 0987654321 150
+Money sent successfully!
+  Amount: RM 150.00
+  Sender Old Balance: RM 550.00
+  Sender New Balance: RM 400.00
+```
+
+---
+
+### **View Wallet Transaction History**
+
+```bash
+karaf@root()> ewallet:wallet-history <phoneNumber>
+```
+
+**Example:**
+
+```bash
+karaf@root()> ewallet:wallet-history 0123456789
+=== Transaction History ===
+Phone Number: 0123456789
+Username: Alice
+Current Balance: RM 400.00
+-------------------------------
+[2026-01-14T20:10:00] TOP_UP: RM 100.00 - Added money
+[2026-01-14T20:15:00] SEND: RM 150.00 - Sent to Bob (0987654321)
+[2026-01-14T20:20:00] RECEIVE: RM 50.00 - Received from Charlie (0111222333)
+```
+### **Full List of Commands**
+
+| Command                  | Description                                | Usage Example                                      |
+| ------------------------ | ------------------------------------------ | -------------------------------------------------- |
+| `ewallet:create-user`    | Create a new user                          | `ewallet:create-user 0123456789 Alice`             |
+| `ewallet:create-wallet`  | Create a wallet with initial balance       | `ewallet:create-wallet 0123456789 Alice 500`       |
+| `ewallet:balance`        | Check wallet balance                       | `ewallet:balance 0123456789`                       |
+| `ewallet:add-money`      | Add funds to wallet                        | `ewallet:add-money 0123456789 100`                 |
+| `ewallet:deduct`         | Deduct balance from wallet                 | `ewallet:deduct 0123456789 50 "Coffee payment"` |
+| `ewallet:send-money`     | Send money to another user by phone number | `ewallet:send-money 0123456789 0987654321 150`     |
+| `ewallet:wallet-history` | View wallet transaction history            | `ewallet:wallet-history 0123456789`                |
+
+---
+
+## Available Commands (Payment Module)
+
+### **Make a Payment to a Merchant**
+
+```bash
+karaf@root()> ewallet:pay <phoneNumber> <merchant> <amount>
+```
+
+**Example:**
+
+```bash
+karaf@root()> ewallet:pay 0123456789 Starbucks 25.50
+Payment Successful!
+Elvina (0123456789) paid RM 25.50 to Starbucks
+```
+
+---
+
+### **Top-Up Wallet Funds**
+
+```bash
+karaf@root()> ewallet:topup <phoneNumber> <amount>
+```
+
+**Example:**
+
+```bash
+karaf@root()> ewallet:topup 0123456789 100
+Top-Up Successful!
+Added RM 100.00 to Elvina's wallet (0123456789)
+```
+
+---
+
+### **Scan and Pay via QR String**
+
+```bash
+karaf@root()> ewallet:scan-qr <phoneNumber> "<merchant:amount>"
+```
+
+**Example:**
+
+```bash
+karaf@root()> ewallet:scan-qr 0123456789 "Starbucks:15.50"
+QR Payment Successful! Elvina (0123456789) paid RM 15.50 to Starbucks
+```
+
+---
+
+### **Manage AutoPay Settings**
+
+```bash
+karaf@root()> ewallet:autopay <phoneNumber> <action> [biller] [amount]
+```
+
+- **setup** → register a new AutoPay  
+- **run** → simulate AutoPay execution  
+
+**Examples:**
+
+```bash
+karaf@root()> ewallet:autopay 0123456789 setup TNB 80
+AutoPay registered for Elvina (0123456789): TNB (RM 80.00)
+
+karaf@root()> ewallet:autopay 0123456789 run
+Simulating AutoPay execution for Elvina (0123456789)...
+Processed AutoPay: TNB RM 80.00
+```
+
+---
+
+### **View Payment History**
+
+```bash
+karaf@root()> ewallet:history <phoneNumber> [type]
+```
+
+- `general` → retail/top-up payments (default)  
+- `qr` → QR payments  
+- `autopay` → AutoPay logs  
+
+**Examples:**
+
+```bash
+karaf@root()> ewallet:history 0123456789
+=== GENERAL HISTORY for Elvina (0123456789) ===
+[2026-01-15T13:30:00] TOPUP: RM 100.00 | Wallet Top-Up | SUCCESS
+[2026-01-15T13:35:00] RETAIL: RM 25.50 | Starbucks | SUCCESS
+
+karaf@root()> ewallet:history 0123456789 qr
+=== QR HISTORY for Elvina (0123456789) ===
+[2026-01-15T13:40:00] QR: RM 15.50 | Starbucks | SUCCESS
+
+karaf@root()> ewallet:history 0123456789 autopay
+=== AUTOPAY HISTORY for Elvina (0123456789) ===
+[2026-01-15T13:45:00] AUTOPAY: RM 80.00 | TNB | SUCCESS
+```
+
+### **Full List of Payment Commands**
+
+| Command              | Description                          | Usage Example                                    |
+| -------------------- | ------------------------------------ | ------------------------------------------------ |
+| `ewallet:pay`        | Make a payment to a merchant         | `ewallet:pay 0123456789 Starbucks 25.50`         |
+| `ewallet:topup`      | Top-up wallet funds                  | `ewallet:topup 0123456789 100`                   |
+| `ewallet:scan-qr`    | Scan and pay via QR string           | `ewallet:scan-qr 0123456789 "Starbucks:15.50"`   |
+| `ewallet:autopay`    | Manage AutoPay (setup/run)           | `ewallet:autopay 0123456789 setup TNB 80`        |
+| `ewallet:history`    | View payment history (general/qr/autopay) | `ewallet:history 0123456789 qr`             |
 
 ## Troubleshooting
 

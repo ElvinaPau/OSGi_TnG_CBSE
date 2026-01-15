@@ -78,7 +78,7 @@ public class EvaluateRiskCommand implements Action {
         return null;
     }
 
-   private int getValidInput(Scanner scanner, int min, int max) {
+    private int getValidInput(Scanner scanner, int min, int max) {
         while (true) {
             session.getConsole().print("Your choice (" + min + "-" + max + "): ");
             session.getConsole().flush();
@@ -86,16 +86,16 @@ public class EvaluateRiskCommand implements Action {
             if (!scanner.hasNextLine()) return -1;
 
             String input = scanner.nextLine().trim();
-            if (input.isEmpty()) continue; // Just silent retry
+            if (input.isEmpty()) continue;
 
             try {
                 int choice = Integer.parseInt(input);
                 if (choice >= min && choice <= max) {
                     return choice;
                 }
-                session.getConsole().println("Out of range. Try again.");
+                session.getConsole().println("Please enter a number between " + min + " and " + max + ".");
             } catch (NumberFormatException e) {
-                session.getConsole().println("Not a number. Try again.");
+                session.getConsole().println("Invalid input. Please enter a digit.");
             }
         }
     }
