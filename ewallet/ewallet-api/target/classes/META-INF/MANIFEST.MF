@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1768463362341
+Bnd-LastModified: 1768464442181
 Build-Jdk-Spec: 17
 Bundle-Description: E-Wallet API interfaces and models
 Bundle-ManifestVersion: 2
