@@ -121,9 +121,7 @@ karaf@root()> scr:list
 
 ## Usage
 
-## Available Commands
-
-The e-wallet provides the following Karaf shell commands:
+## Available Commands (Payment Module)
 
 ### **Create a User**
 
@@ -253,9 +251,6 @@ Current Balance: RM 400.00
 [2026-01-14T20:15:00] SEND: RM 150.00 - Sent to Bob (0987654321)
 [2026-01-14T20:20:00] RECEIVE: RM 50.00 - Received from Charlie (0111222333)
 ```
-
----
-
 ### **Full List of Commands**
 
 | Command                  | Description                                | Usage Example                                      |
@@ -267,6 +262,116 @@ Current Balance: RM 400.00
 | `ewallet:deduct`         | Deduct balance from wallet                 | `ewallet:deduct 0123456789 50 "Coffee payment"` |
 | `ewallet:send-money`     | Send money to another user by phone number | `ewallet:send-money 0123456789 0987654321 150`     |
 | `ewallet:wallet-history` | View wallet transaction history            | `ewallet:wallet-history 0123456789`                |
+
+Got it 👍 — let’s extend your **Usage documentation** to cover the **Payment module** commands you’ve already implemented (`pay`, `topup`, `scan-qr`, `autopay`, `history`). I’ll keep the same style and formatting as your wallet commands so it’s consistent.
+
+## Available Commands (Payment Module)
+
+### **Make a Payment to a Merchant**
+
+```bash
+karaf@root()> ewallet:pay <phoneNumber> <merchant> <amount>
+```
+
+**Example:**
+
+```bash
+karaf@root()> ewallet:pay 0123456789 Starbucks 25.50
+Payment Successful!
+Elvina (0123456789) paid RM 25.50 to Starbucks
+```
+
+---
+
+### **Top-Up Wallet Funds**
+
+```bash
+karaf@root()> ewallet:topup <phoneNumber> <amount>
+```
+
+**Example:**
+
+```bash
+karaf@root()> ewallet:topup 0123456789 100
+Top-Up Successful!
+Added RM 100.00 to Elvina's wallet (0123456789)
+```
+
+---
+
+### **Scan and Pay via QR String**
+
+```bash
+karaf@root()> ewallet:scan-qr <phoneNumber> "<merchant:amount>"
+```
+
+**Example:**
+
+```bash
+karaf@root()> ewallet:scan-qr 0123456789 "Starbucks:15.50"
+QR Payment Successful! Elvina (0123456789) paid RM 15.50 to Starbucks
+```
+
+---
+
+### **Manage AutoPay Settings**
+
+```bash
+karaf@root()> ewallet:autopay <phoneNumber> <action> [biller] [amount]
+```
+
+- **setup** → register a new AutoPay  
+- **run** → simulate AutoPay execution  
+
+**Examples:**
+
+```bash
+karaf@root()> ewallet:autopay 0123456789 setup TNB 80
+AutoPay registered for Elvina (0123456789): TNB (RM 80.00)
+
+karaf@root()> ewallet:autopay 0123456789 run
+Simulating AutoPay execution for Elvina (0123456789)...
+Processed AutoPay: TNB RM 80.00
+```
+
+---
+
+### **View Payment History**
+
+```bash
+karaf@root()> ewallet:history <phoneNumber> [type]
+```
+
+- `general` → retail/top-up payments (default)  
+- `qr` → QR payments  
+- `autopay` → AutoPay logs  
+
+**Examples:**
+
+```bash
+karaf@root()> ewallet:history 0123456789
+=== GENERAL HISTORY for Elvina (0123456789) ===
+[2026-01-15T13:30:00] TOPUP: RM 100.00 | Wallet Top-Up | SUCCESS
+[2026-01-15T13:35:00] RETAIL: RM 25.50 | Starbucks | SUCCESS
+
+karaf@root()> ewallet:history 0123456789 qr
+=== QR HISTORY for Elvina (0123456789) ===
+[2026-01-15T13:40:00] QR: RM 15.50 | Starbucks | SUCCESS
+
+karaf@root()> ewallet:history 0123456789 autopay
+=== AUTOPAY HISTORY for Elvina (0123456789) ===
+[2026-01-15T13:45:00] AUTOPAY: RM 80.00 | TNB | SUCCESS
+```
+
+### **Full List of Payment Commands**
+
+| Command              | Description                          | Usage Example                                    |
+| -------------------- | ------------------------------------ | ------------------------------------------------ |
+| `ewallet:pay`        | Make a payment to a merchant         | `ewallet:pay 0123456789 Starbucks 25.50`         |
+| `ewallet:topup`      | Top-up wallet funds                  | `ewallet:topup 0123456789 100`                   |
+| `ewallet:scan-qr`    | Scan and pay via QR string           | `ewallet:scan-qr 0123456789 "Starbucks:15.50"`   |
+| `ewallet:autopay`    | Manage AutoPay (setup/run)           | `ewallet:autopay 0123456789 setup TNB 80`        |
+| `ewallet:history`    | View payment history (general/qr/autopay) | `ewallet:history 0123456789 qr`             |
 
 ## Troubleshooting
 
