@@ -17,7 +17,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final List<AutoPayData> autoPayStore = new CopyOnWriteArrayList<>();
 
     @Reference
-    private WalletService walletService;ewallet:create-wallet 0123456789 Alice 500.00
+    private WalletService walletService;
 
     // --- 1. General Payment Logic ---
     @Override
