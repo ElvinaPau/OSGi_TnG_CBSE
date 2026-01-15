@@ -121,7 +121,7 @@ karaf@root()> scr:list
 
 ## Usage
 
-## Available Commands (Payment Module)
+## Available Commands (Wallet Module)
 
 ### **Create a User**
 
