@@ -17,90 +17,151 @@ public class PaymentServiceImpl implements PaymentService {
     private final List<AutoPayData> autoPayStore = new CopyOnWriteArrayList<>();
 
     @Reference
-    private WalletService walletService;
+    private WalletService walletService;ewallet:create-wallet 0123456789 Alice 500.00
 
     // --- 1. General Payment Logic ---
     @Override
-    public boolean processPayment(String userId, double amount, String merchant) {
-        boolean success = walletService.deductBalance(userId, amount, merchant);
-        
-        // Log with status
-        String status = success ? "SUCCESS" : "FAILED";
-        
-        // Only saving SUCCESS for now, but you could save FAILED too
-        if (success) {
-            // FIXED: Added 'status' argument
-            paymentStore.add(new PaymentData(userId, amount, merchant, "RETAIL", status));
+    public boolean processPayment(String phoneNumber, String username, double amount, String merchant) {
+        Wallet wallet = walletService.getWallet(phoneNumber);
+        if (wallet == null) {
+            System.err.println("No wallet found for phone number: " + phoneNumber);
+            return false;
         }
+        if (amount <= 0) {
+            System.err.println("Invalid payment amount: " + amount);
+            return false;
+        }
+        if (merchant == null || merchant.isBlank()) {
+            System.err.println("Invalid merchant name.");
+            return false;
+        }
+
+        boolean success = walletService.deductBalance(phoneNumber, amount, merchant);
+        String status = success ? "SUCCESS" : "FAILED";
+
+        paymentStore.add(new PaymentData(phoneNumber, amount, merchant, "RETAIL", status));
         return success;
     }
 
     @Override
-    public boolean processTopUp(String userId, double amount) {
-        walletService.addFunds(userId, amount); 
-        // FIXED: Added "SUCCESS" status
-        paymentStore.add(new PaymentData(userId, amount, "Wallet Top-Up", "TOPUP", "SUCCESS"));
+    public boolean processTopUp(String phoneNumber, String username, double amount) {
+        Wallet wallet = walletService.getWallet(phoneNumber);
+        if (wallet == null) {
+            System.err.println("No wallet found for phone number: " + phoneNumber);
+            return false;
+        }
+        if (amount <= 0) {
+            System.err.println("Invalid top-up amount: " + amount);
+            return false;
+        }
+
+        walletService.addMoney(phoneNumber, amount);
+        paymentStore.add(new PaymentData(phoneNumber, amount, "Wallet Top-Up", "TOPUP", "SUCCESS"));
         return true;
     }
 
     @Override
-    public List<PaymentData> getPaymentHistory(String userId) {
+    public List<PaymentData> getPaymentHistory(String phoneNumber) {
         return paymentStore.stream()
-                .filter(p -> p.getUserId().equals(userId))
+                .filter(p -> p.getUserId().equals(phoneNumber))
                 .collect(Collectors.toList());
     }
 
     // --- 2. QR Logic ---
     @Override
-    public boolean processQRPayment(String userId, String qrString) {
+    public boolean processQRPayment(String phoneNumber, String username, String qrString) {
+        Wallet wallet = walletService.getWallet(phoneNumber);
+        if (wallet == null) {
+            System.err.println("No wallet found for phone number: " + phoneNumber);
+            return false;
+        }
+        if (qrString == null || qrString.isBlank()) {
+            System.err.println("Invalid QR string.");
+            return false;
+        }
+
         String[] parts = qrString.split(":");
-        if (parts.length != 2) return false;
+        if (parts.length != 2) {
+            System.err.println("QR format invalid. Expected: MERCHANT:AMOUNT");
+            return false;
+        }
 
         String merchant = parts[0];
-        double amount = Double.parseDouble(parts[1]);
+        double amount;
+        try {
+            amount = Double.parseDouble(parts[1]);
+        } catch (NumberFormatException e) {
+            System.err.println("Invalid QR amount format.");
+            return false;
+        }
 
-        boolean success = walletService.deductBalance(userId, amount, "QR: " + merchant);
+        if (amount <= 0) {
+            System.err.println("Invalid QR payment amount.");
+            return false;
+        }
+        if (merchant == null || merchant.isBlank()) {
+            System.err.println("Invalid QR merchant.");
+            return false;
+        }
+
+        boolean success = walletService.deductBalance(phoneNumber, amount, "QR: " + merchant);
         String status = success ? "SUCCESS" : "FAILED";
 
-        if (success) {
-            // FIXED: Added 'status' argument to both
-            qrStore.add(new QRData(userId, qrString, merchant, amount, status));
-            paymentStore.add(new PaymentData(userId, amount, "QR: " + merchant, "QR", status));
-        }
+        qrStore.add(new QRData(phoneNumber, qrString, merchant, amount, status));
+        paymentStore.add(new PaymentData(phoneNumber, amount, "QR: " + merchant, "QR", status));
         return success;
     }
 
     @Override
-    public List<QRData> getQRHistory(String userId) {
+    public List<QRData> getQRHistory(String phoneNumber) {
         return qrStore.stream()
-                .filter(q -> q.getUserId().equals(userId))
+                .filter(q -> q.getUserId().equals(phoneNumber))
                 .collect(Collectors.toList());
     }
 
     // --- 3. AutoPay Logic ---
     @Override
-    public void registerAutoPay(String userId, String biller, double amount) {
-        // FIXED: Added "ACTIVE" status
-        autoPayStore.add(new AutoPayData(userId, biller, amount, "ACTIVE"));
+    public void registerAutoPay(String phoneNumber, String biller, double amount) {
+        Wallet wallet = walletService.getWallet(phoneNumber);
+        if (wallet == null) {
+            System.err.println("No wallet found for phone number: " + phoneNumber);
+            return;
+        }
+        if (amount <= 0) {
+            System.err.println("Invalid AutoPay amount: " + amount);
+            return;
+        }
+        if (biller == null || biller.isBlank()) {
+            System.err.println("Invalid biller name.");
+            return;
+        }
+
+        autoPayStore.add(new AutoPayData(phoneNumber, biller, amount, "ACTIVE"));
         System.out.println("AutoPay registered for " + biller);
     }
 
     @Override
-    public void runAutoPaySimulation(String userId) {
-        List<AutoPayData> userAutoPays = getAutoPaySettings(userId);
-        
+    public void runAutoPaySimulation(String phoneNumber) {
+        Wallet wallet = walletService.getWallet(phoneNumber);
+        if (wallet == null) {
+            System.err.println("No wallet found for phone number: " + phoneNumber);
+            return;
+        }
+
+        List<AutoPayData> userAutoPays = getAutoPaySettings(phoneNumber);
         System.out.println("--- Running AutoPay Simulation ---");
+
         for (AutoPayData data : userAutoPays) {
-            // Check status properly
             if ("ACTIVE".equals(data.getStatus())) {
-                boolean success = walletService.deductBalance(userId, data.getAmount(), "AutoPay: " + data.getBiller());
-                
+                boolean success = walletService.deductBalance(phoneNumber, data.getAmount(),
+                        "AutoPay: " + data.getBiller());
                 String runStatus = success ? "SUCCESS" : "FAILED";
-                
+
+                paymentStore.add(new PaymentData(phoneNumber, data.getAmount(),
+                        "AutoPay: " + data.getBiller(), "AUTOPAY", runStatus));
+
                 if (success) {
                     data.updateLastExecuted();
-                    // FIXED: Added 'runStatus' argument
-                    paymentStore.add(new PaymentData(userId, data.getAmount(), "AutoPay: " + data.getBiller(), "AUTOPAY", runStatus));
                     System.out.println("Processed AutoPay: " + data);
                 } else {
                     System.err.println("Failed AutoPay for " + data.getBiller());
@@ -110,9 +171,9 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public List<AutoPayData> getAutoPaySettings(String userId) {
+    public List<AutoPayData> getAutoPaySettings(String phoneNumber) {
         return autoPayStore.stream()
-                .filter(a -> a.getUserId().equals(userId))
+                .filter(a -> a.getUserId().equals(phoneNumber))
                 .collect(Collectors.toList());
     }
 }

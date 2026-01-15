@@ -32,16 +32,16 @@
     </dependency>
 
     <dependency>
-        <groupId>com.tng</groupId>
-        <artifactId>user-component</artifactId>
-        <version>1.0-SNAPSHOT</version>
-        <scope>test</scope>
+      <groupId>com.tng</groupId>
+      <artifactId>user-component</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
-        <groupId>com.tng</groupId>
-        <artifactId>wallet-component</artifactId>
-        <version>1.0-SNAPSHOT</version>
-        <scope>test</scope>
+      <groupId>com.tng</groupId>
+      <artifactId>wallet-component</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 
@@ -55,6 +55,9 @@
           <instructions>
             <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
             <Private-Package>com.tng.payment.impl</Private-Package>
+            <Import-Package>
+              com.tng.*,org.osgi.*,*
+            </Import-Package>
             <_dsannotations>*</_dsannotations>
           </instructions>
         </configuration>

@@ -8,15 +8,15 @@ import org.apache.karaf.shell.api.action.Command;
 import org.apache.karaf.shell.api.action.lifecycle.Reference;
 import org.apache.karaf.shell.api.action.lifecycle.Service;
 
-@Command(scope = "ewallet", name = "balance", description = "Check wallet balance")
+@Command(scope = "ewallet", name = "balance", description = "Check wallet balance by phone number")
 @Service
 public class BalanceCommand implements Action {
 
     @Reference
     private WalletService walletService;
 
-    @Argument(index = 0, name = "username", description = "Username", required = true)
-    private String username;
+    @Argument(index = 0, name = "phoneNumber", description = "User's phone number", required = true)
+    private String phoneNumber;
 
     @Override
     public Object execute() throws Exception {
@@ -25,15 +25,15 @@ public class BalanceCommand implements Action {
             return null;
         }
 
-        Wallet wallet = walletService.getWallet(username);
+        Wallet wallet = walletService.getWallet(phoneNumber);
         if (wallet == null) {
-            System.out.println("No wallet found for user '" + username + "'");
-            System.out.println("Use: ewallet:create-wallet " + username + " <initial-balance>");
+            System.out.println("No wallet found for phone number '" + phoneNumber + "'");
+            System.out.println("Create wallet using: ewallet:create-wallet " + phoneNumber + " <username> <initial-balance>");
             return null;
         }
 
         System.out.println("=== Wallet Balance ===");
-        System.out.println("  Username: " + username);
+        System.out.println("  Phone Number: " + phoneNumber);
         System.out.printf("  Balance: RM %.2f%n", wallet.getBalance());
 
         return null;

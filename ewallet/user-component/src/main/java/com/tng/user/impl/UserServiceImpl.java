@@ -9,23 +9,27 @@ import org.osgi.service.component.annotations.Component;
 @Component(service = UserService.class)
 public class UserServiceImpl implements UserService {
 
-    // In-memory store simulating repository
     private final Map<String, User> users = new ConcurrentHashMap<>();
 
     @Override
-    public User findOrCreateUser(String username) {
-        // If user exists, return it
-        if (users.containsKey(username)) {
-            return users.get(username);
+    public User findOrCreateUser(String phoneNumber, String username) {
+        // Check if user already exists by phone number
+        User existing = users.get(phoneNumber);
+        if (existing != null) {
+            if (!existing.getUsername().equals(username)) {
+                existing.setUsername(username);
+            }
+            return existing;
         }
-        // Else create new user
-        User newUser = new User(username);
-        users.put(username, newUser);
+
+        // Create new user
+        User newUser = new User(username, phoneNumber);
+        users.put(phoneNumber, newUser);
         return newUser;
     }
 
     @Override
-    public User getUser(String username) {
-        return users.get(username);
+    public User getUser(String phoneNumber) {
+        return users.get(phoneNumber);
     }
 }
