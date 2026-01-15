@@ -263,7 +263,7 @@ Current Balance: RM 400.00
 | `ewallet:send-money`     | Send money to another user by phone number | `ewallet:send-money 0123456789 0987654321 150`     |
 | `ewallet:wallet-history` | View wallet transaction history            | `ewallet:wallet-history 0123456789`                |
 
-Got it 👍 — let’s extend your **Usage documentation** to cover the **Payment module** commands you’ve already implemented (`pay`, `topup`, `scan-qr`, `autopay`, `history`). I’ll keep the same style and formatting as your wallet commands so it’s consistent.
+---
 
 ## Available Commands (Payment Module)
 
