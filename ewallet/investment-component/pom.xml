@@ -20,6 +20,39 @@
       <artifactId>ewallet-api</artifactId>
       <scope>provided</scope>
     </dependency>
+    
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.2</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>4.11.0</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.tng</groupId>
+      <artifactId>payment-component</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.tng</groupId>
+      <artifactId>wallet-component</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.tng</groupId>
+      <artifactId>user-component</artifactId> 
+      <scope>test</scope>
+    </dependency>
 
     <dependency>
       <groupId>org.osgi</groupId>

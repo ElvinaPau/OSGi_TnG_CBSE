@@ -9,6 +9,7 @@ import org.apache.karaf.shell.api.action.lifecycle.Reference;
 import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.apache.karaf.shell.api.console.Session;
 
+import java.io.PrintStream;
 import java.util.List;
 import java.util.Scanner;
 
@@ -27,31 +28,33 @@ public class EvaluateRiskCommand implements Action {
 
     @Override
     public Object execute() {
+        PrintStream out = session.getConsole();
+        Scanner scanner = new Scanner(session.getKeyboard());
         int totalScore = 0;
 
-        System.out.println("RISK ASSESSMENT QUIZ");
-        System.out.println("Hello " + username + ", let's determine your risk profile.");
+        out.println("RISK ASSESSMENT QUIZ");
+        out.println("Hello " + username + ", let's determine your risk profile.");
 
         // Question 1
-        System.out.println("\n1. What is your investment timeframe?");
-        System.out.println("   (1) Less than 1 year (Short term)");
-        System.out.println("   (2) 1 to 5 years (Medium term)");
-        System.out.println("   (3) More than 5 years (Long term)");
-        totalScore += getValidInput(1, 3);
+        out.println("\n1. What is your investment goal?");
+        out.println("   (1) Preserve Capital");
+        out.println("   (2) Balanced Growth");
+        out.println("   (3) Maximize Returns");
+        totalScore += getValidInput(scanner, 1, 3);
 
         // Question 2
-        System.out.println("\n2. How much of your savings are you willing to invest?");
-        System.out.println("   (1) Small portion (< 10%)");
-        System.out.println("   (2) Moderate portion (10% - 30%)");
-        System.out.println("   (3) Large portion (> 30%)");
-        totalScore += getValidInput(1, 3);
+        out.println("\n2. How do you react if your investment drops 10%?");
+        out.println("   (1) Sell everything");
+        out.println("   (2) Do nothing");
+        out.println("   (3) Buy more");
+        totalScore += getValidInput(scanner, 1, 3);
 
         // Question 3
-        System.out.println("\n3. If your investment value drops 10% in a month, you would:");
-        System.out.println("   (1) Sell immediately to prevent further loss");
-        System.out.println("   (2) Hold and wait for recovery");
-        System.out.println("   (3) Buy more while it is cheaper");
-        totalScore += getValidInput(1, 3);
+        out.println("\n3. What is your investment timeframe?");
+        out.println("   (1) < 1 year");
+        out.println("   (2) 1-5 years");
+        out.println("   (3) 5+ years");
+        totalScore += getValidInput(scanner, 1, 3);
 
         // Logic to determine category
         String riskCategory;
@@ -66,50 +69,49 @@ public class EvaluateRiskCommand implements Action {
         // Save to the Service
         investmentService.evaluateRiskProfile(username, riskCategory);
 
-        System.out.println("\n----------------------------------------------------");
-        System.out.println("RESULT: Your Risk Profile is " + riskCategory);
-        System.out.println("----------------------------------------------------");
+        out.println("\n----------------------------------------------------");
+        out.println("RESULT: Your Risk Profile is " + riskCategory);
+        out.println("----------------------------------------------------");
 
-        suggestFund(riskCategory);
+        suggestFund(riskCategory, out);
 
         return null;
     }
 
-    private int getValidInput(int min, int max) {
-        Scanner scanner = new Scanner(session.getKeyboard());
-        int choice = -1;
-        
-        while (choice < min || choice > max) {
+   private int getValidInput(Scanner scanner, int min, int max) {
+        while (true) {
             session.getConsole().print("Your choice (" + min + "-" + max + "): ");
-            session.getConsole().flush(); 
-            
+            session.getConsole().flush();
+
+            if (!scanner.hasNextLine()) return -1;
+
+            String input = scanner.nextLine().trim();
+            if (input.isEmpty()) continue; // Just silent retry
+
             try {
-                if (scanner.hasNextLine()) {
-                    String input = scanner.nextLine().trim();
-                    if (input.isEmpty()) continue;
-                    choice = Integer.parseInt(input);
-                } else {
-                    break; // Stream ended
+                int choice = Integer.parseInt(input);
+                if (choice >= min && choice <= max) {
+                    return choice;
                 }
-            } catch (Exception e) {
-                session.getConsole().println("Invalid input. Please enter a number.");
+                session.getConsole().println("Out of range. Try again.");
+            } catch (NumberFormatException e) {
+                session.getConsole().println("Not a number. Try again.");
             }
         }
-        return choice;
     }
 
-    private void suggestFund(String profile) {
+    private void suggestFund(String profile, PrintStream out) {
         List<FundData> funds = investmentService.getAllAvailableFunds();
         String targetRisk = profile.equals("CONSERVATIVE") ? "Low" : 
                             profile.equals("MODERATE") ? "Medium" : "High";
 
-        System.out.println("Based on your profile, we recommend looking at:");
+        out.println("Based on your profile, we recommend looking at:");
         funds.stream()
             .filter(f -> f.getRiskCategory().equalsIgnoreCase(targetRisk))
             .findFirst()
             .ifPresentOrElse(
-                f -> System.out.println(" >> " + f.getName() + " (ID: " + f.getFundId() + ")"),
-                () -> System.out.println(" >> No matching funds found at this time.")
+                f -> out.println(" >> " + f.getName() + " (ID: " + f.getFundId() + ")"),
+                () -> out.println(" >> No matching funds found at this time.")
             );
     }
 }

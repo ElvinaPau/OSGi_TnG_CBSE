@@ -15,7 +15,7 @@ public class MarketCommand implements Action {
 
     @Override
     public Object execute() {
-        System.out.println("[Market] Simulating price changes based on volatility...");
+        System.out.println("[Market] Simulating fund price changes based on volatility...");
         investmentService.runMarketChangeSimulation(); 
         return null;
     }

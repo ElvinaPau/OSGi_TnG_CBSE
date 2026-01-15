@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 @Component(service = InvestmentService.class)
 public class InvestmentServiceImpl implements InvestmentService {
 
-    // ===== In-memory repositories (Spring Data replacement) =====
     private final Map<String, FundData> fundRepo = new ConcurrentHashMap<>();
     private final Map<String, PortfolioData> portfolioRepo = new ConcurrentHashMap<>();
     private final List<InvestmentData> historyRepo =
@@ -21,7 +20,6 @@ public class InvestmentServiceImpl implements InvestmentService {
     @Reference
     private PaymentService paymentService;
 
-    // ===== OSGi lifecycle =====
     @Activate
     public void activate() {
         initSampleFunds();
@@ -117,7 +115,7 @@ public class InvestmentServiceImpl implements InvestmentService {
             throw new RuntimeException("Fund not found with ID: " + fundId);
         }
 
-        // 1. Attempt wallet deduction
+        // 1. Use payment sevice to process payment
         boolean success = paymentService.processPayment(userId, amount, fund.getName());
 
         if (!success) {
