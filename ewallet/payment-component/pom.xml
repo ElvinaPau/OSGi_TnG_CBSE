@@ -14,14 +14,12 @@
   <name>payment-component</name>
 
   <dependencies>
-    <!-- API bundle -->
     <dependency>
       <groupId>com.tng</groupId>
       <artifactId>ewallet-api</artifactId>
       <scope>provided</scope>
     </dependency>
 
-    <!-- OSGi dependencies -->
     <dependency>
       <groupId>org.osgi</groupId>
       <artifactId>osgi.core</artifactId>
@@ -33,7 +31,6 @@
       <scope>provided</scope>
     </dependency>
 
-    <!-- User & Wallet bundles should not be test scope, reference at runtime -->
     <dependency>
       <groupId>com.tng</groupId>
       <artifactId>user-component</artifactId>

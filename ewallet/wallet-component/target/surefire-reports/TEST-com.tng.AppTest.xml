@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.tng.AppTest" time="0.014" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.tng.AppTest" time="0.013" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="22"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="MY"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk-22.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/elvinapau/Desktop/CBSE/OSGi_TnG_CBSE/ewallet/wallet-component/target/surefire/surefirebooter-20260115013829636_9.jar /Users/elvinapau/Desktop/CBSE/OSGi_TnG_CBSE/ewallet/wallet-component/target/surefire 2026-01-15T01-38-28_702-jvmRun1 surefire-20260115013829636_7tmp surefire_2-20260115013829636_8tmp"/>
+    <property name="sun.java.command" value="/Users/elvinapau/Desktop/CBSE/OSGi_TnG_CBSE/ewallet/wallet-component/target/surefire/surefirebooter-20260115131911174_9.jar /Users/elvinapau/Desktop/CBSE/OSGi_TnG_CBSE/ewallet/wallet-component/target/surefire 2026-01-15T13-19-10_271-jvmRun1 surefire-20260115131911174_7tmp surefire_2-20260115131911174_8tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/Users/elvinapau/Desktop/CBSE/OSGi_TnG_CBSE/ewallet/wallet-component/target/test-classes:/Users/elvinapau/Desktop/CBSE/OSGi_TnG_CBSE/ewallet/wallet-component/target/classes:/Users/elvinapau/Desktop/CBSE/OSGi_TnG_CBSE/ewallet/ewallet-api/target/ewallet-api-1.0-SNAPSHOT.jar:/Users/elvinapau/.m2/repository/org/osgi/osgi.core/8.0.0/osgi.core-8.0.0.jar:/Users/elvinapau/.m2/repository/org/osgi/osgi.cmpn/7.0.0/osgi.cmpn-7.0.0.jar:/Users/elvinapau/.m2/repository/org/osgi/org.osgi.service.component.annotations/1.5.1/org.osgi.service.component.annotations-1.5.1.jar:/Users/elvinapau/.m2/repository/org/osgi/osgi.annotation/8.1.0/osgi.annotation-8.1.0.jar:/Users/elvinapau/.m2/repository/org/osgi/org.osgi.namespace.extender/1.0.1/org.osgi.namespace.extender-1.0.1.jar:/Users/elvinapau/.m2/repository/org/osgi/org.osgi.util.function/1.0.0/org.osgi.util.function-1.0.0.jar:/Users/elvinapau/.m2/repository/org/osgi/org.osgi.util.promise/1.0.0/org.osgi.util.promise-1.0.0.jar:/Users/elvinapau/.m2/repository/junit/junit/4.13.2/junit-4.13.2.jar:/Users/elvinapau/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/Users/elvinapau/.m2/repository/org/mockito/mockito-core/4.5.1/mockito-core-4.5.1.jar:/Users/elvinapau/.m2/repository/net/bytebuddy/byte-buddy/1.12.9/byte-buddy-1.12.9.jar:/Users/elvinapau/.m2/repository/net/bytebuddy/byte-buddy-agent/1.12.9/byte-buddy-agent-1.12.9.jar:/Users/elvinapau/.m2/repository/org/objenesis/objenesis/3.2/objenesis-3.2.jar:"/>
@@ -29,7 +29,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="apple.awt.application.name" value="ForkedBooter"/>
-    <property name="surefire.real.class.path" value="/Users/elvinapau/Desktop/CBSE/OSGi_TnG_CBSE/ewallet/wallet-component/target/surefire/surefirebooter-20260115013829636_9.jar"/>
+    <property name="surefire.real.class.path" value="/Users/elvinapau/Desktop/CBSE/OSGi_TnG_CBSE/ewallet/wallet-component/target/surefire/surefirebooter-20260115131911174_9.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="22.0.2+9-70"/>

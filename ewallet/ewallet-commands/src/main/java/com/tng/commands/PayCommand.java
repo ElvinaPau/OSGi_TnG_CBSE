@@ -1,6 +1,8 @@
 package com.tng.commands;
 
 import com.tng.PaymentService;
+import com.tng.User;
+import com.tng.UserService;
 import org.apache.karaf.shell.api.action.Action;
 import org.apache.karaf.shell.api.action.Argument;
 import org.apache.karaf.shell.api.action.Command;
@@ -14,8 +16,11 @@ public class PayCommand implements Action {
     @Reference
     private PaymentService paymentService;
 
-    @Argument(index = 0, name = "username", required = true)
-    private String username;
+    @Reference
+    private UserService userService;
+
+    @Argument(index = 0, name = "phoneNumber", description = "User Phone Number", required = true)
+    private String phoneNumber;
 
     @Argument(index = 1, name = "merchant", required = true)
     private String merchant;
@@ -25,11 +30,20 @@ public class PayCommand implements Action {
 
     @Override
     public Object execute() throws Exception {
-        boolean success = paymentService.processPayment(username, amount, merchant);
-        
+        if (paymentService == null) {
+            System.err.println("Error: PaymentService is not available.");
+            return null;
+        }
+
+        // Fetch username for display
+        User user = userService.getUser(phoneNumber);
+        String username = (user != null) ? user.getUsername() : phoneNumber;
+
+        boolean success = paymentService.processPayment(phoneNumber, username, amount, merchant);
+
         if (success) {
             System.out.println("Payment Successful!");
-            System.out.printf("Paid RM %.2f to %s%n", amount, merchant);
+            System.out.printf("%s paid RM %.2f to %s%n", username, amount, merchant);
         } else {
             System.err.println("Payment Failed! Check balance or user existence.");
         }

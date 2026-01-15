@@ -1,6 +1,8 @@
 package com.tng.commands;
 
 import com.tng.PaymentService;
+import com.tng.User;
+import com.tng.UserService;
 import org.apache.karaf.shell.api.action.Action;
 import org.apache.karaf.shell.api.action.Argument;
 import org.apache.karaf.shell.api.action.Command;
@@ -14,8 +16,11 @@ public class AutoPayCommand implements Action {
     @Reference
     private PaymentService paymentService;
 
-    @Argument(index = 0, name = "username", description = "User ID", required = true, multiValued = false)
-    private String username;
+    @Reference
+    private UserService userService; // add this to fetch username
+
+    @Argument(index = 0, name = "phoneNumber", description = "User Phone Number", required = true, multiValued = false)
+    private String phoneNumber;
 
     @Argument(index = 1, name = "action", description = "Action: 'setup' or 'run'", required = true, multiValued = false)
     private String action;
@@ -33,20 +38,22 @@ public class AutoPayCommand implements Action {
             return null;
         }
 
+        User user = userService.getUser(phoneNumber);
+        String username = (user != null) ? user.getUsername() : phoneNumber;
+
         if ("setup".equalsIgnoreCase(action)) {
-            // Validate inputs for setup
             if (biller == null || amount == null) {
                 System.err.println("Error: 'setup' requires <biller> and <amount> arguments.");
-                System.out.println("Usage: ewallet:autopay <user> setup <biller> <amount>");
+                System.out.println("Usage: ewallet:autopay <phoneNumber> setup <biller> <amount>");
                 return null;
             }
-            paymentService.registerAutoPay(username, biller, amount);
-            System.out.printf("AutoPay registered for %s: %s (RM %.2f)%n", username, biller, amount);
+            paymentService.registerAutoPay(phoneNumber, biller, amount);
+            System.out.printf("AutoPay registered for %s (%s): %s (RM %.2f)%n",
+                    username, phoneNumber, biller, amount);
 
         } else if ("run".equalsIgnoreCase(action)) {
-            // Run simulation
-            System.out.println("Simulating AutoPay execution for user: " + username);
-            paymentService.runAutoPaySimulation(username);
+            System.out.printf("Simulating AutoPay execution for user: %s (%s)%n", username, phoneNumber);
+            paymentService.runAutoPaySimulation(phoneNumber);
             System.out.println("Simulation complete. Check history/balance for results.");
 
         } else {
