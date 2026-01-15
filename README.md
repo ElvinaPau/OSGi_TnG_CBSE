@@ -179,7 +179,7 @@ karaf@root()> ewallet:balance 0123456789
 
 ---
 
-### **Add Funds / Top-Up**
+### **Add Moneyp**
 
 ```bash
 karaf@root()> ewallet:add-money <phoneNumber> <amount>
