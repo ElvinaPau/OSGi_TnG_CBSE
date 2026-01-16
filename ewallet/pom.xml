@@ -17,6 +17,7 @@
     <module>wallet-component</module>
     <module>payment-component</module>
     <module>ewallet-commands</module>
+    <module>investment-component</module>
   </modules>
 
   <properties>
@@ -78,6 +79,12 @@
       <dependency>
         <groupId>com.tng</groupId>
         <artifactId>wallet-component</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.tng</groupId>
+        <artifactId>investment-component</artifactId>
         <version>${project.version}</version>
       </dependency>
     </dependencies>
