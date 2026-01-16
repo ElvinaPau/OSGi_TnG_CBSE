@@ -57,16 +57,6 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public boolean deductBalance(String phoneNumber, double amount, String description) {
-        Wallet wallet = getWallet(phoneNumber);
-        if (wallet != null && wallet.getBalance() >= amount) {
-            wallet.setBalance(wallet.getBalance() - amount);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public boolean sendMoney(String senderPhoneNumber, String recipientPhoneNumber, double amount) {
         if (senderPhoneNumber.equals(recipientPhoneNumber))
             return false;
