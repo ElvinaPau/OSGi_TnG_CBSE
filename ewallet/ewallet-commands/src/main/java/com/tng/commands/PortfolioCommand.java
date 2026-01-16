@@ -13,7 +13,7 @@ import org.apache.karaf.shell.api.action.lifecycle.Reference;
 import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.apache.karaf.shell.api.console.Session;
 
-@Command(scope = "ewallet", name = "invest-portfolio", description = "View user portfolio and returns")
+@Command(scope = "ewallet", name = "invest-portfolio", description = "View portfolio and returns")
 @Service
 public class PortfolioCommand implements Action {
 

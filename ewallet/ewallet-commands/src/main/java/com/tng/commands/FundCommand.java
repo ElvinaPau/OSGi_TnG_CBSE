@@ -12,7 +12,7 @@ import org.apache.karaf.shell.api.action.lifecycle.Service;
 
 import java.util.List;
 
-@Command(scope = "ewallet", name = "invest-list", description = "Show available investment funds")
+@Command(scope = "ewallet", name = "invest-list", description = "View available investment funds")
 @Service
 public class FundCommand implements Action {
 

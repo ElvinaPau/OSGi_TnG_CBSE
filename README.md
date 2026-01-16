@@ -381,7 +381,7 @@ karaf@root()> ewallet:history 0123456789 autopay
 
 ## Available Commands (Investment Module)
 
-### **Show Available Investment Funds**
+### **View Available Investment Funds**
 
 ```bash
 karaf@root()> ewallet:invest-list <username>
@@ -431,7 +431,7 @@ Successfully sold 20.0 units of F02
 
 ---
 
-### **Show Investment History**
+### **View Investment Transaction History **
 
 ```bash
 karaf@root()> ewallet:invest-history <username>
@@ -456,7 +456,7 @@ Total Transactions: 2
 
 ---
 
-### **View User Portfolio and Returns**
+### **View Portfolio and Returns**
 
 ```bash
 karaf@root()> ewallet:invest-portfolio <username>
@@ -519,7 +519,7 @@ Based on your profile, we recommend looking at:
 
 ---
 
-### **Simulate Market Price Changes**
+### **Simulate Market Fluctuations**
 
 ```bash
 karaf@root()> ewallet:invest-simulate
@@ -539,12 +539,12 @@ karaf@root()> ewallet:invest-simulate
 
 | Command                    | Description                       | Usage Example                                    |
 | -------------------------- | --------------------------------- | ------------------------------------------------ |
-| `ewallet:invest-list`      | Show available investment funds   | `ewallet:invest-list` OR </br>`ewallet:invest-list Alice`  |
+| `ewallet:invest-list`      | View available investment funds   | `ewallet:invest-list` OR </br>`ewallet:invest-list Alice`  |
 | `ewallet:invest-trade`     | Buy or Sell fund units            | `ewallet:invest-trade 0123456789 Alice BUY F02 50` <br/> `ewallet:invest-trade 0123456789 Alice SELL F02 20` |
-| `ewallet:invest-history`   | Show investment history           | `ewallet:invest-history Alice`        |
-| `ewallet:invest-portfolio` | View user portfolio and returns   | `ewallet:invest-portfolio Alice`      |
+| `ewallet:invest-history`   | View investment transaction history  | `ewallet:invest-history Alice`        |
+| `ewallet:invest-portfolio` | View portfolio and returns        | `ewallet:invest-portfolio Alice`      |
 | `ewallet:risk-quiz`        | Take Risk Assessment Quiz         | `ewallet:risk-quiz Alice`             |
-| `ewallet:invest-simulate`  | Simulate market price changes     | `ewallet:invest-simulate`             |
+| `ewallet:invest-simulate`  | Simulate market fluctuations      | `ewallet:invest-simulate`             |
 
 ---
 

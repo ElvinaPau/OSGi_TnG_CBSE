@@ -6,7 +6,7 @@ import org.apache.karaf.shell.api.action.Command;
 import org.apache.karaf.shell.api.action.lifecycle.Reference;
 import org.apache.karaf.shell.api.action.lifecycle.Service;
 
-@Command(scope = "ewallet", name = "invest-simulate", description = "Simulate market price changes")
+@Command(scope = "ewallet", name = "invest-simulate", description = "Simulate market fluctuations")
 @Service
 public class MarketCommand implements Action {
 
