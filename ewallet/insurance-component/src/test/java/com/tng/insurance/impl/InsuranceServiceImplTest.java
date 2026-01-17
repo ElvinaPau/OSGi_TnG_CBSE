@@ -10,6 +10,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InsuranceServiceImplTest {
@@ -22,19 +23,27 @@ public class InsuranceServiceImplTest {
 
     @Test
     public void testPurchaseMotorPolicy() {
-        // Setup: Mock payment to return true
-        when(paymentService.processPayment(anyString(), anyString(), anyDouble(), anyString())).thenReturn(true);
+        // Arrange: Mock PaymentService to return true
+        // Expects: (phone, username, amount, description)
+        when(paymentService.processPayment(anyString(), anyString(), eq(500.0), anyString())).thenReturn(true);
 
-        // Execute
-        insuranceService.purchaseMotorPolicy("Ali", "0123456", "W8888");
+        // Act
+        insuranceService.purchaseMotorPolicy("0123456789", "Ali", "W1234");
 
-        // Ensure paymentService was called
-        verify(paymentService).processPayment(eq("Ali"), eq("0123456"), eq(500.0), anyString());
+        // Assert: Verify payment was called with correct parameters
+        verify(paymentService, times(1)).processPayment(eq("0123456789"), eq("Ali"), eq(500.0), contains("Motor"));
     }
 
     @Test
-    public void testSubmitClaim() {
-        insuranceService.submitClaim("Ali", "POL-123");
-        // Simple verification that it runs without error
+    public void testPurchaseTravelPolicy() {
+        // Arrange
+        // Travel cost: 2 pax * 80.0 = 160.0
+        when(paymentService.processPayment(anyString(), anyString(), eq(160.0), anyString())).thenReturn(true);
+
+        // Act
+        insuranceService.purchaseTravelPolicy("0123456789", "Ali", "Japan", 2);
+
+        // Assert
+        verify(paymentService, times(1)).processPayment(eq("0123456789"), eq("Ali"), eq(160.0), contains("Travel"));
     }
 }
