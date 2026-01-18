@@ -9,7 +9,7 @@ public interface InvestmentService {
     FundData getFundById(String fundId);
     List<FundData> getAllAvailableFunds();
     void updateFundPrice(String fundId, double newPrice);
-    void runMarketChangeSimulation();
+    void runMarketChangeSimulation(String phoneNumber);
     FundData getFundByIndex(int index);
     void deleteFundByIndex(int index);
 

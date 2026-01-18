@@ -3,6 +3,7 @@ package com.tng.payment.impl;
 import com.tng.*;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -18,6 +19,9 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Reference
     private WalletService walletService;
+
+    @Reference(cardinality = ReferenceCardinality.OPTIONAL)
+    private NotificationService notificationService;
 
     // --- 1. General Payment Logic ---
     @Override
@@ -40,6 +44,17 @@ public class PaymentServiceImpl implements PaymentService {
         String status = success ? "SUCCESS" : "FAILED";
 
         paymentStore.add(new PaymentData(phoneNumber, amount, merchant, "RETAIL", status));
+        
+        // Notify user
+        if (notificationService != null) {
+            if (success) {
+                notificationService.generateNotification(phoneNumber, "PAYMENT", 
+                    "Payment of RM " + String.format("%.2f", amount) + " to " + merchant + " successful");
+            } else {
+                notificationService.generateNotification(phoneNumber, "PAYMENT", 
+                    "Payment of RM " + String.format("%.2f", amount) + " to " + merchant + " failed");
+            }
+        }
         return success;
     }
 
@@ -109,6 +124,17 @@ public class PaymentServiceImpl implements PaymentService {
 
         qrStore.add(new QRData(phoneNumber, qrString, merchant, amount, status));
         paymentStore.add(new PaymentData(phoneNumber, amount, "QR: " + merchant, "QR", status));
+        
+        // Notify user
+        if (notificationService != null) {
+            if (success) {
+                notificationService.generateNotification(phoneNumber, "QR", 
+                    "QR Payment of RM " + String.format("%.2f", amount) + " to " + merchant + " successful");
+            } else {
+                notificationService.generateNotification(phoneNumber, "QR", 
+                    "QR Payment of RM " + String.format("%.2f", amount) + " to " + merchant + " failed");
+            }
+        }
         return success;
     }
 
@@ -138,6 +164,12 @@ public class PaymentServiceImpl implements PaymentService {
 
         autoPayStore.add(new AutoPayData(phoneNumber, biller, amount, "ACTIVE"));
         System.out.println("AutoPay registered for " + biller);
+        
+        // Notify user
+        if (notificationService != null) {
+            notificationService.generateNotification(phoneNumber, "AUTOPAY", 
+                "AutoPay setup successful for " + biller + " (RM " + String.format("%.2f", amount) + ")");
+        }
     }
 
     @Override
@@ -159,6 +191,17 @@ public class PaymentServiceImpl implements PaymentService {
 
                 paymentStore.add(new PaymentData(phoneNumber, data.getAmount(),
                         "AutoPay: " + data.getBiller(), "AUTOPAY", runStatus));
+
+                // Notify user
+                if (notificationService != null) {
+                    if (success) {
+                        notificationService.generateNotification(phoneNumber, "AUTOPAY", 
+                            "AutoPay executed for " + data.getBiller() + " (RM " + String.format("%.2f", data.getAmount()) + ")");
+                    } else {
+                        notificationService.generateNotification(phoneNumber, "AUTOPAY", 
+                            "AutoPay failed for " + data.getBiller() + " - Insufficient balance");
+                    }
+                }
 
                 if (success) {
                     data.updateLastExecuted();

@@ -63,7 +63,7 @@ public class InvestmentServiceImplTest {
         double oldPrice = fund.getPrice();
         
         // Execute simulation
-        investmentService.runMarketChangeSimulation();
+        investmentService.runMarketChangeSimulation(null);
         
         // Verify price updated
         double newPrice = investmentService.getFundById("F01").getPrice();
