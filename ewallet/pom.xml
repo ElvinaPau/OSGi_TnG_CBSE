@@ -16,6 +16,7 @@
     <module>user-component</module>
     <module>wallet-component</module>
     <module>payment-component</module>
+    <module>notification-component</module>
     <module>ewallet-commands</module>
 
     <module>insurance-component</module>

@@ -2,8 +2,10 @@ package com.tng.insurance.impl;
 
 import com.tng.InsuranceService;
 import com.tng.PaymentService;
+import com.tng.NotificationService;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -18,6 +20,9 @@ public class InsuranceServiceImpl implements InsuranceService {
 
     @Reference
     private PaymentService paymentService;
+
+    @Reference(cardinality = ReferenceCardinality.OPTIONAL)
+    private NotificationService notificationService;
 
     @Override
     public void purchaseMotorPolicy(String userId, String phoneNumber, String plateNo) {
@@ -60,6 +65,12 @@ public class InsuranceServiceImpl implements InsuranceService {
 
         System.out.println("Claim submitted for Policy: " + policyId);
         System.out.println("Claim ID: " + claimId);
+
+        // Notify user
+        if (notificationService != null) {
+            notificationService.generateNotification(userId, "CLAIM", 
+                "Claim submitted for Policy: " + policyId + ". Claim ID: " + claimId);
+        }
 
         return claimId;
     }

@@ -4,6 +4,7 @@ import com.tng.*;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,6 +20,9 @@ public class InvestmentServiceImpl implements InvestmentService {
 
     @Reference
     private PaymentService paymentService;
+
+    @Reference(cardinality = ReferenceCardinality.OPTIONAL)
+    private NotificationService notificationService;
 
     @Activate
     public void activate() {
@@ -76,30 +80,35 @@ public class InvestmentServiceImpl implements InvestmentService {
     }
 
     @Override
-    public void runMarketChangeSimulation() {
+    public void runMarketChangeSimulation(String phoneNumber) {
         Random random = new Random();
-
         for (FundData fund : fundRepo.values()) {
             double volatility;
-
             switch (fund.getRiskCategory().toLowerCase()) {
                 case "high":   volatility = 0.10; break;
                 case "medium": volatility = 0.04; break;
                 case "low":    volatility = 0.01; break;
                 default:       volatility = 0.03;
             }
-
             double oldPrice = fund.getPrice();
             double changePercent = (random.nextDouble() * 2 * volatility) - volatility;
             double rawNewPrice = oldPrice * (1 + changePercent);
-            
             double finalPrice = Math.max(0.01, rawNewPrice);
             double roundedPrice = Math.round(finalPrice * 10000.0) / 10000.0;
 
             updateFundPrice(fund.getFundId(), roundedPrice);
-
             System.out.printf("[Market] %-25s: RM %8.4f -> RM %8.4f (%+.2f%%)%n", 
                 fund.getName(), oldPrice, roundedPrice, changePercent * 100);
+            
+            // Notify user only if fluctuation > 5%
+            if (phoneNumber != null && !phoneNumber.isBlank() && notificationService != null) {
+                double absChangePercent = Math.abs(changePercent * 100);
+                if (absChangePercent > 5.0) {
+                    notificationService.generateNotification(phoneNumber, "MARKET", 
+                        "Market Alert: " + fund.getName() + " fluctuated significantly! RM " + String.format("%.4f", oldPrice) + 
+                        " → RM " + String.format("%.4f", roundedPrice) + " (" + String.format("%+.2f", changePercent * 100) + "%)");
+                }
+            }
         }
     }
 
@@ -140,6 +149,7 @@ public class InvestmentServiceImpl implements InvestmentService {
                 username, fundId, "BUY", amount, units, "SUCCESS"
             );
             historyRepo.add(record);
+            
             return record;
 
         } catch (Exception e) {
@@ -149,6 +159,7 @@ public class InvestmentServiceImpl implements InvestmentService {
                 username, fundId, "BUY", amount, 0, "FAILED"
             );
             historyRepo.add(failed);
+            
             throw new RuntimeException("System error. Amount refunded.");
         }
     }
