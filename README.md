@@ -181,43 +181,6 @@ karaf@root()> ewallet:balance 0123456789
 
 ---
 
-### **Add Money**
-
-```bash
-karaf@root()> ewallet:add-money <phoneNumber> <amount>
-```
-
-**Example:**
-
-```bash
-karaf@root()> ewallet:add-money 0123456789 100
-Money added successfully!
-  Amount Added: RM 100.00
-  Old Balance: RM 500.00
-  New Balance: RM 600.00
-```
-
----
-
-### **Deduct Balance**
-
-```bash
-karaf@root()> ewallet:deduct <phoneNumber> <amount> "Description"
-```
-
-**Example:**
-
-```bash
-karaf@root()> ewallet:deduct 0123456789 50 "Coffee payment"
-Balance deducted successfully!
-  Amount Deducted: RM 50.00
-  Description: Coffee payment
-  Old Balance: RM 600.00
-  New Balance: RM 550.00
-```
-
----
-
 ### **Send Money to Another User**
 
 ```bash
@@ -262,8 +225,6 @@ Current Balance: RM 400.00
 | `ewallet:create-user`    | Create a new user                          | `ewallet:create-user 0123456789 Alice`             |
 | `ewallet:create-wallet`  | Create a wallet with initial balance       | `ewallet:create-wallet 0123456789 Alice 500`       |
 | `ewallet:balance`        | Check wallet balance                       | `ewallet:balance 0123456789`                       |
-| `ewallet:add-money`      | Add funds to wallet                        | `ewallet:add-money 0123456789 100`                 |
-| `ewallet:deduct`         | Deduct balance from wallet                 | `ewallet:deduct 0123456789 50 "Coffee payment"` |
 | `ewallet:send-money`     | Send money to another user by phone number | `ewallet:send-money 0123456789 0987654321 150`     |
 | `ewallet:wallet-history` | View wallet transaction history            | `ewallet:wallet-history 0123456789`                |
 

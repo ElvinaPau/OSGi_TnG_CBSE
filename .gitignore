@@ -6,7 +6,10 @@ deploy/
 instances/
 lock
 
-# Ignore compiled Java files (already likely there, but good to check)
+# Ignore compiled Java files
 target/
 *.class
 *.jar
+
+# Ignore IDE specific settings
+.vscode/
