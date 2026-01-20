@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.tng.AppTest" time="0.03" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.tng.AppTest" time="0.032" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sun.cpu.isalist" value="amd64"/>
     <property name="sun.jnu.encoding" value="Cp1252"/>
-    <property name="java.class.path" value="C:\Users\shats\Documents\Github\OSGi_TnG_CBSE\ewallet\user-component\target\test-classes;C:\Users\shats\Documents\Github\OSGi_TnG_CBSE\ewallet\user-component\target\classes;C:\Users\shats\Documents\Github\OSGi_TnG_CBSE\ewallet\ewallet-api\target\ewallet-api-1.0-SNAPSHOT.jar;C:\Users\shats\.m2\repository\org\osgi\osgi.core\6.0.0\osgi.core-6.0.0.jar;C:\Users\shats\.m2\repository\org\osgi\osgi.cmpn\6.0.0\osgi.cmpn-6.0.0.jar;C:\Users\shats\.m2\repository\org\osgi\org.osgi.service.component.annotations\1.4.0\org.osgi.service.component.annotations-1.4.0.jar;C:\Users\shats\.m2\repository\junit\junit\4.13.2\junit-4.13.2.jar;C:\Users\shats\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\shats\.m2\repository\org\mockito\mockito-core\4.5.1\mockito-core-4.5.1.jar;C:\Users\shats\.m2\repository\net\bytebuddy\byte-buddy\1.12.9\byte-buddy-1.12.9.jar;C:\Users\shats\.m2\repository\net\bytebuddy\byte-buddy-agent\1.12.9\byte-buddy-agent-1.12.9.jar;C:\Users\shats\.m2\repository\org\objenesis\objenesis\3.2\objenesis-3.2.jar;"/>
+    <property name="java.class.path" value="C:\Users\shats\Documents\Github\OSGi_TnG_CBSE\ewallet\user-component\target\test-classes;C:\Users\shats\Documents\Github\OSGi_TnG_CBSE\ewallet\user-component\target\classes;C:\Users\shats\Documents\Github\OSGi_TnG_CBSE\ewallet\ewallet-api\target\classes;C:\Users\shats\.m2\repository\org\osgi\osgi.core\6.0.0\osgi.core-6.0.0.jar;C:\Users\shats\.m2\repository\org\osgi\osgi.cmpn\6.0.0\osgi.cmpn-6.0.0.jar;C:\Users\shats\.m2\repository\org\osgi\org.osgi.service.component.annotations\1.4.0\org.osgi.service.component.annotations-1.4.0.jar;C:\Users\shats\.m2\repository\junit\junit\4.13.2\junit-4.13.2.jar;C:\Users\shats\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\shats\.m2\repository\org\mockito\mockito-core\4.5.1\mockito-core-4.5.1.jar;C:\Users\shats\.m2\repository\net\bytebuddy\byte-buddy\1.12.9\byte-buddy-1.12.9.jar;C:\Users\shats\.m2\repository\net\bytebuddy\byte-buddy-agent\1.12.9\byte-buddy-agent-1.12.9.jar;C:\Users\shats\.m2\repository\org\objenesis\objenesis\3.2\objenesis-3.2.jar;"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="user.variant" value=""/>
@@ -15,9 +15,9 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="MY"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-17\bin"/>
-    <property name="sun.java.command" value="C:\Users\shats\AppData\Local\Temp\surefire17121226481069348185\surefirebooter-20260116002455254_6.jar C:\Users\shats\AppData\Local\Temp\surefire17121226481069348185 2026-01-16T00-24-52_236-jvmRun1 surefire-20260116002455254_4tmp surefire_1-20260116002455254_5tmp"/>
+    <property name="sun.java.command" value="C:\Users\shats\AppData\Local\Temp\surefire18195116344386200382\surefirebooter-20260120090058483_6.jar C:\Users\shats\AppData\Local\Temp\surefire18195116344386200382 2026-01-20T09-00-57_546-jvmRun1 surefire-20260120090058483_4tmp surefire_1-20260120090058483_5tmp"/>
     <property name="jdk.debug" value="release"/>
-    <property name="surefire.test.class.path" value="C:\Users\shats\Documents\Github\OSGi_TnG_CBSE\ewallet\user-component\target\test-classes;C:\Users\shats\Documents\Github\OSGi_TnG_CBSE\ewallet\user-component\target\classes;C:\Users\shats\Documents\Github\OSGi_TnG_CBSE\ewallet\ewallet-api\target\ewallet-api-1.0-SNAPSHOT.jar;C:\Users\shats\.m2\repository\org\osgi\osgi.core\6.0.0\osgi.core-6.0.0.jar;C:\Users\shats\.m2\repository\org\osgi\osgi.cmpn\6.0.0\osgi.cmpn-6.0.0.jar;C:\Users\shats\.m2\repository\org\osgi\org.osgi.service.component.annotations\1.4.0\org.osgi.service.component.annotations-1.4.0.jar;C:\Users\shats\.m2\repository\junit\junit\4.13.2\junit-4.13.2.jar;C:\Users\shats\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\shats\.m2\repository\org\mockito\mockito-core\4.5.1\mockito-core-4.5.1.jar;C:\Users\shats\.m2\repository\net\bytebuddy\byte-buddy\1.12.9\byte-buddy-1.12.9.jar;C:\Users\shats\.m2\repository\net\bytebuddy\byte-buddy-agent\1.12.9\byte-buddy-agent-1.12.9.jar;C:\Users\shats\.m2\repository\org\objenesis\objenesis\3.2\objenesis-3.2.jar;"/>
+    <property name="surefire.test.class.path" value="C:\Users\shats\Documents\Github\OSGi_TnG_CBSE\ewallet\user-component\target\test-classes;C:\Users\shats\Documents\Github\OSGi_TnG_CBSE\ewallet\user-component\target\classes;C:\Users\shats\Documents\Github\OSGi_TnG_CBSE\ewallet\ewallet-api\target\classes;C:\Users\shats\.m2\repository\org\osgi\osgi.core\6.0.0\osgi.core-6.0.0.jar;C:\Users\shats\.m2\repository\org\osgi\osgi.cmpn\6.0.0\osgi.cmpn-6.0.0.jar;C:\Users\shats\.m2\repository\org\osgi\org.osgi.service.component.annotations\1.4.0\org.osgi.service.component.annotations-1.4.0.jar;C:\Users\shats\.m2\repository\junit\junit\4.13.2\junit-4.13.2.jar;C:\Users\shats\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\shats\.m2\repository\org\mockito\mockito-core\4.5.1\mockito-core-4.5.1.jar;C:\Users\shats\.m2\repository\net\bytebuddy\byte-buddy\1.12.9\byte-buddy-1.12.9.jar;C:\Users\shats\.m2\repository\net\bytebuddy\byte-buddy-agent\1.12.9\byte-buddy-agent-1.12.9.jar;C:\Users\shats\.m2\repository\org\objenesis\objenesis\3.2\objenesis-3.2.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="C:\Users\shats"/>
     <property name="user.language" value="en"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\shats\AppData\Local\Temp\surefire17121226481069348185\surefirebooter-20260116002455254_6.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\shats\AppData\Local\Temp\surefire18195116344386200382\surefirebooter-20260120090058483_6.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="17.0.12+8-LTS-286"/>
@@ -56,5 +56,5 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="61.0"/>
   </properties>
-  <testcase name="testApp" classname="com.tng.AppTest" time="0.002"/>
+  <testcase name="testApp" classname="com.tng.AppTest" time="0.001"/>
 </testsuite>
