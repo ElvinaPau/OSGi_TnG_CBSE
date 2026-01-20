@@ -17,12 +17,16 @@
     <module>wallet-component</module>
     <module>payment-component</module>
     <module>ewallet-commands</module>
+
+    <module>insurance-component</module>
+
     <module>investment-component</module>
+
   </modules>
 
   <properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <osgi.version>8.0.0</osgi.version>
