@@ -4,11 +4,13 @@ import com.tng.User;
 import com.tng.UserService;
 import com.tng.Wallet;
 import com.tng.WalletService;
+import com.tng.NotificationService;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
 
 @Component(service = WalletService.class)
 public class WalletServiceImpl implements WalletService {
@@ -18,6 +20,9 @@ public class WalletServiceImpl implements WalletService {
 
     @Reference
     private UserService userService;
+
+    @Reference(cardinality = ReferenceCardinality.OPTIONAL)
+    private NotificationService notificationService;
 
     @Override
     public Wallet findOrCreateWallet(String phoneNumber, String username, double initialBalance) {
@@ -52,6 +57,12 @@ public class WalletServiceImpl implements WalletService {
         if (wallet != null && amount > 0) {
             wallet.setBalance(wallet.getBalance() + amount);
             wallet.addTransaction("TOP_UP", amount, "Added money");
+            
+            // Notify user
+            if (notificationService != null) {
+                notificationService.generateNotification(phoneNumber, "WALLET", 
+                    "RM " + String.format("%.2f", amount) + " has been added to your wallet.");
+            }
         }
         return wallet;
     }
@@ -61,6 +72,13 @@ public class WalletServiceImpl implements WalletService {
         Wallet wallet = getWallet(phoneNumber);
         if (wallet != null && wallet.getBalance() >= amount) {
             wallet.setBalance(wallet.getBalance() - amount);
+            wallet.addTransaction("DEDUCT", amount, description);
+            
+            // Alert if balance is low
+            if (wallet.getBalance() < 50) {
+                notificationService.generateNotification(phoneNumber, "WALLET", 
+                    "Low balance alert: RM " + String.format("%.2f", wallet.getBalance()) + " remaining");
+            }
             return true;
         }
         return false;
@@ -90,6 +108,18 @@ public class WalletServiceImpl implements WalletService {
                 "Sent to " + recipientUser.getUsername() + " (" + recipientPhoneNumber + ")");
         recipientWallet.addTransaction("RECEIVE", amount,
                 "Received from " + senderUser.getUsername() + " (" + senderPhoneNumber + ")");
+
+        // Notify sender
+        if (notificationService != null) {
+            notificationService.generateNotification(senderPhoneNumber, "WALLET", 
+                "RM " + String.format("%.2f", amount) + " sent to " + recipientUser.getUsername());
+        }
+
+        // Notify recipient
+        if (notificationService != null) {
+            notificationService.generateNotification(recipientPhoneNumber, "WALLET", 
+                "RM " + String.format("%.2f", amount) + " received from " + senderUser.getUsername());
+        }
 
         return true;
     }
