@@ -348,20 +348,9 @@ karaf@root()> ewallet:history 0123456789 autopay
 karaf@root()> ewallet:invest-list <username>
 ```
 
-- username is optional
-
 **Example:**
 
 ```bash
-karaf@root()> ewallet:invest-list
-
-#   | ID     | NAME                      |   NAV (RM) | RISK     |      OWNED
------------------------------------------------------------------------------
-1   | F01    | Low Risk Income Fund      |     1.0000 | Low      |     0.0000
-2   | F02    | Balanced Global Fund      |     2.5000 | Medium   |     0.0000
-3   | F03    | Equity Growth Fund        |     5.7500 | High     |     0.0000
-4   | F04    | Digital Assets Fund       |    10.2000 | High     |     0.0000
-
 karaf@root()> ewallet:invest-list Alice
 Username: Alice
 
@@ -500,7 +489,7 @@ karaf@root()> ewallet:invest-simulate
 
 | Command                    | Description                       | Usage Example                                    |
 | -------------------------- | --------------------------------- | ------------------------------------------------ |
-| `ewallet:invest-list`      | View available investment funds   | `ewallet:invest-list` OR </br>`ewallet:invest-list Alice`  |
+| `ewallet:invest-list`      | View available investment funds   | `ewallet:invest-list Alice`  |
 | `ewallet:invest-trade`     | Buy or Sell fund units            | `ewallet:invest-trade 0123456789 Alice BUY F02 50` <br/> `ewallet:invest-trade 0123456789 Alice SELL F02 20` |
 | `ewallet:invest-history`   | View investment transaction history  | `ewallet:invest-history Alice`        |
 | `ewallet:invest-portfolio` | View portfolio and returns        | `ewallet:invest-portfolio Alice`      |

@@ -22,8 +22,8 @@ public class FundCommand implements Action {
     @Argument(
         index = 0,
         name = "username",
-        description = "Username to display owned units (optional)",
-        required = false
+        description = "Username to display owned units",
+        required = true
     )
     private String username;
 
