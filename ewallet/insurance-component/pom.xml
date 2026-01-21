@@ -16,13 +16,11 @@
 
   <dependencies>
 
-    <!-- 业务依赖 -->
     <dependency>
       <groupId>com.tng</groupId>
       <artifactId>ewallet-api</artifactId>
     </dependency>
 
-    <!-- OSGi API -->
     <dependency>
       <groupId>org.osgi</groupId>
       <artifactId>osgi.core</artifactId>
@@ -35,9 +33,6 @@
       <scope>provided</scope>
     </dependency>
 
-    <!-- ================= 测试依赖 ================= -->
-
-    <!-- JUnit 5 -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -52,7 +47,6 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- Mockito -->
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
