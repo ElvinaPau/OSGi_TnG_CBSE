@@ -1,19 +1,20 @@
 package com.tng.insurance.impl;
 
 import com.tng.PaymentService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
-public class InsuranceServiceImplTest {
+@ExtendWith(MockitoExtension.class)
+// Unit test for InsuranceServiceImpl
+// This test verifies the business logic of the Insurance component
+class InsuranceServiceImplTest {
 
     @Mock
     private PaymentService paymentService;
@@ -22,28 +23,24 @@ public class InsuranceServiceImplTest {
     private InsuranceServiceImpl insuranceService;
 
     @Test
-    public void testPurchaseMotorPolicy() {
-        // Arrange: Mock PaymentService to return true
-        // Expects: (phone, username, amount, description)
-        when(paymentService.processPayment(anyString(), anyString(), eq(500.0), anyString())).thenReturn(true);
+    void testPurchaseMotorPolicy() {
+        when(paymentService.processPayment(anyString(), anyString(), eq(500.0), anyString()))
+                .thenReturn(true);
 
-        // Act
-        insuranceService.purchaseMotorPolicy("0123456789", "Ali", "W1234");
+        insuranceService.purchaseMotorPolicy("user1", "0123456789", "W1234");
 
-        // Assert: Verify payment was called with correct parameters
-        verify(paymentService, times(1)).processPayment(eq("0123456789"), eq("Ali"), eq(500.0), contains("Motor"));
+        verify(paymentService, times(1))
+                .processPayment(eq("user1"), eq("0123456789"), eq(500.0), contains("Motor"));
     }
 
     @Test
-    public void testPurchaseTravelPolicy() {
-        // Arrange
-        // Travel cost: 2 pax * 80.0 = 160.0
-        when(paymentService.processPayment(anyString(), anyString(), eq(160.0), anyString())).thenReturn(true);
+    void testPurchaseTravelPolicy() {
+        when(paymentService.processPayment(anyString(), anyString(), eq(160.0), anyString()))
+                .thenReturn(true);
 
-        // Act
-        insuranceService.purchaseTravelPolicy("0123456789", "Ali", "Japan", 2);
+        insuranceService.purchaseTravelPolicy("user1", "0123456789", "Japan", 2);
 
-        // Assert
-        verify(paymentService, times(1)).processPayment(eq("0123456789"), eq("Ali"), eq(160.0), contains("Travel"));
+        verify(paymentService, times(1))
+                .processPayment(eq("user1"), eq("0123456789"), eq(160.0), contains("Travel"));
     }
 }
